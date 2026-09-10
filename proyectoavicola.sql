@@ -280,6 +280,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listar_ventas` ()   BEGIN
     SELECT * FROM ventas;
 END$$
 
+USE proyectoavicola ; 
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_add_camara_frigorifica` (IN `p_capacidad` INT, IN `p_estado_cadena_frio` VARCHAR(50)) BEGIN
+    INSERT INTO camaras_frigorificas (capacidad, estado_cadena_frio)
+    VALUES (p_capacidad, p_estado_cadena_frio);
+END
+
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_camara_frigorifica` (IN `p_id` INT, IN `p_capacidad` INT, IN `p_estado_cadena_frio` VARCHAR(50))   BEGIN
     UPDATE camaras_frigorificas 
     SET capacidad = p_capacidad, 
@@ -402,8 +410,7 @@ END$$
 DELIMITER ;
 
 -- --------------------------------------------------------
-create database proyectoavicola;
-use proyectoavicola;
+
 --
 -- Estructura de tabla para la tabla `camaras_frigorificas`
 --
