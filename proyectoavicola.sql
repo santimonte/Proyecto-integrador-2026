@@ -6,6 +6,12 @@
 -- Tiempo de generación: 08-09-2026 a las 16:26:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
+CREATE DATABASE IF NOT EXISTS proyectoavicola;
+USE proyectoavicola;
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+...
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -16,9 +22,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
--- AGREGA ESTAS LÍNEAS AQUÍ:
-CREATE DATABASE IF NOT EXISTS `proyectoavicola`;
-USE `proyectoavicola`;
+
 --
 
 DELIMITER $$
