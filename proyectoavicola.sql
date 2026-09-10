@@ -402,7 +402,8 @@ END$$
 DELIMITER ;
 
 -- --------------------------------------------------------
-
+create database proyectoavicola;
+use proyectoavicola;
 --
 -- Estructura de tabla para la tabla `camaras_frigorificas`
 --
