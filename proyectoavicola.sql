@@ -280,7 +280,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listar_ventas` ()   BEGIN
     SELECT * FROM ventas;
 END$$
 
-USE proyectoavicola ; 
+ 
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_add_camara_frigorifica` (IN `p_capacidad` INT, IN `p_estado_cadena_frio` VARCHAR(50)) BEGIN
     INSERT INTO camaras_frigorificas (capacidad, estado_cadena_frio)
