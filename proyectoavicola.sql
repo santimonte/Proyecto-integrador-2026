@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-09-2026 a las 17:16:38
+-- Tiempo de generación: 15-09-2026 a las 15:54:22
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,9 +20,338 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proyectoavicola`
 --
-DROP DATABASE IF EXISTS `proyectoavicola`;
 CREATE DATABASE IF NOT EXISTS `proyectoavicola` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `proyectoavicola`;
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `actualizar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar` (IN `p_tabla_destino` VARCHAR(50), IN `p_id` INT, IN `p_capacidad` INT, IN `p_estado_cadena_frio` VARCHAR(50), IN `p_id_usuario` INT, IN `p_telefono_cliente` VARCHAR(50), IN `p_id_lote` INT, IN `p_id_usuario_veterinario` INT, IN `p_fecha_control` DATETIME, IN `p_cantidad_bajas` INT, IN `p_observaciones_veterinarias` VARCHAR(255), IN `p_id_venta_detalle` INT, IN `p_id_producto_detalle` INT, IN `p_cantidad_detalle` INT, IN `p_precio_unitario` DECIMAL(10,2), IN `p_id_lote_faena` INT, IN `p_fecha_faena` DATETIME, IN `p_cantidad_aves_faenadas` INT, IN `p_peso_total_obtenido` DECIMAL(10,2), IN `p_nombre_galpon` VARCHAR(100), IN `p_capacidad_maxima` VARCHAR(50), IN `p_id_proveedor_insumo` INT, IN `p_descripcion_insumo` VARCHAR(200), IN `p_cantidad_insumo` INT, IN `p_fecha_compra` DATETIME, IN `p_id_galpon_lote` INT, IN `p_fecha_ingreso` DATETIME, IN `p_cantidad_inicial` INT, IN `p_raza_genetica` VARCHAR(100), IN `p_id_sensor_medicion` INT, IN `p_valor_registrado` DECIMAL(10,2), IN `p_fecha_medicion` DATETIME, IN `p_id_camara_prod` INT, IN `p_nombre_producto` VARCHAR(100), IN `p_stock_disponible` INT, IN `p_fecha_envasado` DATETIME, IN `p_telefono_proveedor` VARCHAR(50), IN `p_nombre_rol` VARCHAR(50), IN `p_tipo_sensor` VARCHAR(50), IN `p_ubicacion` VARCHAR(100), IN `p_email` VARCHAR(150), IN `p_contrasena` VARCHAR(255), IN `p_id_rol` INT, IN `p_id_cliente_venta` INT, IN `p_fecha_venta` DATETIME, IN `p_total_facturado` DECIMAL(12,2))   BEGIN
+
+    IF p_tabla_destino = 'camaras_frigorificas' THEN
+        UPDATE camaras_frigorificas 
+        SET capacidad = p_capacidad, 
+            estado_cadena_frio = p_estado_cadena_frio 
+        WHERE id_camara = p_id;
+
+    ELSEIF p_tabla_destino = 'clientes' THEN
+        UPDATE clientes 
+        SET id_usuario = p_id_usuario, 
+            telefono = p_telefono_cliente 
+        WHERE id_cliente = p_id;
+
+    ELSEIF p_tabla_destino = 'controles_sanidad' THEN
+        UPDATE controles_sanidad 
+        SET id_lote = p_id_lote, 
+            id_usuario_veterinario = p_id_usuario_veterinario, 
+            fecha_control = p_fecha_control, 
+            cantidad_bajas = p_cantidad_bajas, 
+            observaciones_veterinarias = p_observaciones_veterinarias 
+        WHERE id_control = p_id;
+
+    ELSEIF p_tabla_destino = 'detalles_ventas' THEN
+        UPDATE detalles_ventas 
+        SET id_venta = p_id_venta_detalle, 
+            id_producto = p_id_producto_detalle, 
+            cantidad = p_cantidad_detalle, 
+            precio_unitario = p_precio_unitario 
+        WHERE id_detalle_venta = p_id;
+
+    ELSEIF p_tabla_destino = 'faenas' THEN
+        UPDATE faenas 
+        SET id_lote = p_id_lote_faena, 
+            fecha_faena = p_fecha_faena, 
+            cantidad_aves_faenadas = p_cantidad_aves_faenadas, 
+            peso_total_obtenido = p_peso_total_obtenido 
+        WHERE id_faena = p_id;
+
+    ELSEIF p_tabla_destino = 'galpones' THEN
+        UPDATE galpones 
+        SET nombre_galpon = p_nombre_galpon, 
+            capacidad_maxima = p_capacidad_maxima 
+        WHERE id_galpon = p_id;
+
+    ELSEIF p_tabla_destino = 'insumos_compras' THEN
+        UPDATE insumos_compras 
+        SET id_proveedor = p_id_proveedor_insumo, 
+            descripcion_insumo = p_descripcion_insumo, 
+            cantidad = p_cantidad_insumo, 
+            fecha_compra = p_fecha_compra 
+        WHERE id_compra = p_id;
+
+    ELSEIF p_tabla_destino = 'lotes_aves' THEN
+        UPDATE lotes_aves 
+        SET id_galpon = p_id_galpon_lote, 
+            fecha_ingreso = p_fecha_ingreso, 
+            cantidad_inicial = p_cantidad_inicial, 
+            raza_genetica = p_raza_genetica 
+        WHERE id_lote = p_id;
+
+    ELSEIF p_tabla_destino = 'medicion_sensores' THEN
+        UPDATE medicion_sensores 
+        SET id_sensor = p_id_sensor_medicion, 
+            valor_registrado = p_valor_registrado, 
+            fecha_medicion = p_fecha_medicion 
+        WHERE id_medicion = p_id;
+
+    ELSEIF p_tabla_destino = 'productos_stock' THEN
+        UPDATE productos_stock 
+        SET id_camara = p_id_camara_prod, 
+            nombre_producto = p_nombre_producto, 
+            stock_disponible = p_stock_disponible, 
+            fecha_envasado = p_fecha_envasado 
+        WHERE id_producto = p_id;
+
+    ELSEIF p_tabla_destino = 'proveedores' THEN
+        UPDATE proveedores 
+        SET telefono = p_telefono_proveedor 
+        WHERE id_proveedor = p_id;
+
+    ELSEIF p_tabla_destino = 'roles' THEN
+        UPDATE roles 
+        SET nombre_rol = p_nombre_rol 
+        WHERE id_rol = p_id;
+
+    ELSEIF p_tabla_destino = 'sensores' THEN
+        UPDATE sensores 
+        SET tipo_sensor = p_tipo_sensor, 
+            ubicacion = p_ubicacion 
+        WHERE id_sensor = p_id;
+
+    ELSEIF p_tabla_destino = 'usuarios' THEN
+        UPDATE usuarios 
+        SET email = p_email, 
+            contrasena = p_contrasena, 
+            id_rol = p_id_rol 
+        WHERE id_usuario = p_id;
+
+    ELSEIF p_tabla_destino = 'ventas' THEN
+        UPDATE ventas 
+        SET id_cliente = p_id_cliente_venta, 
+            fecha_venta = p_fecha_venta, 
+            total_facturado = p_total_facturado 
+        WHERE id_venta = p_id;
+        
+    ELSE
+        SIGNAL SQLSTATE  '45000'  SET MESSAGE_TEXT =  'Error: El nombre de la tabla especificada no es válido.' ;
+    END IF;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `Buscar_por_id`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Buscar_por_id` (IN `p_id_camara` INT, IN `p_id_cliente` INT, IN `p_id_control` INT, IN `p_id_detalle_venta` INT, IN `p_id_faena` INT, IN `p_id_galpon` INT, IN `p_id_insumos_compras` INT, IN `p_lote` INT, IN `p_id_medicion` INT, IN `p_id_productos` INT, IN `p_id_proveedor` INT, IN `p_id_rol` INT, IN `p_id_sensor` INT, IN `p_id_usuario` INT, IN `p_id_venta` INT)   BEGIN 
+
+    SELECT * FROM camaras_frigorificas WHERE id_camaras = p_id_camara;
+    
+    SELECT * FROM clientes WHERE id_cliente = p_id_cliente;
+    
+    SELECT * FROM controles_sanidad WHERE id_control = p_id_control;
+    
+    SELECT * FROM detalles_ventas WHERE id_detalle_venta = p_id_detalle_venta;
+    
+    SELECT * FROM faenas WHERE id_faena = p_id_faena;
+    
+    SELECT * FROM galpones WHERE id_galpon = p_id_galpon;
+    
+    SELECT * FROM insumos_compras WHERE id_insumos_compras = p_id_insumos_compras;
+    
+    SELECT * FROM lotes_aves WHERE id_lote = p_lote;
+    
+    SELECT * FROM medicion_sensores WHERE id_medicion = p_id_medicion;
+    
+    SELECT * FROM productos_stock WHERE id_productos = p_id_productos;
+    
+    SELECT * FROM proveedores WHERE id_proveedor = p_id_proveedor;
+    
+    SELECT * FROM roles WHERE id_rol = p_id_rol;
+    
+    SELECT * FROM sensores WHERE id_sensor = p_id_sensor;
+    
+    SELECT * FROM usuarios WHERE id_usuario = p_id_usuario;
+    
+    SELECT * FROM ventas WHERE id_venta = p_id_venta;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `eliminar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar` (IN `p_tabla_destino` VARCHAR(50), IN `p_id` INT)   BEGIN
+
+    IF p_tabla_destino = 'camaras_frigorificas' THEN
+    DELETE FROM camaras_frigorificas WHERE id_camara = p_id;
+
+    ELSEIF p_tabla_destino = 'clientes' THEN
+        DELETE FROM clientes WHERE id_cliente = p_id;
+
+    ELSEIF p_tabla_destino = 'controles_sanidad' THEN
+        DELETE FROM controles_sanidad WHERE id_control = p_id;
+
+    ELSEIF p_tabla_destino = 'detalles_ventas' THEN
+        DELETE FROM detalles_ventas WHERE id_detalle_venta = p_id;
+
+    ELSEIF p_tabla_destino = 'faenas' THEN
+        DELETE FROM faenas WHERE id_faena = p_id;
+
+    ELSEIF p_tabla_destino = 'galpones' THEN
+        DELETE FROM galpones WHERE id_galpon = p_id;
+
+    ELSEIF p_tabla_destino = 'insumos_compras' THEN
+        DELETE FROM insumos_compras WHERE id_compra = p_id;
+
+    ELSEIF p_tabla_destino = 'lotes_aves' THEN
+        DELETE FROM lotes_aves WHERE id_lote = p_id;
+
+    ELSEIF p_tabla_destino = 'medicion_sensores' THEN
+        DELETE FROM medicion_sensores WHERE id_medicion = p_id;
+
+    ELSEIF p_tabla_destino = 'productos_stock' THEN
+        DELETE FROM productos_stock WHERE id_producto = p_id;
+
+    ELSEIF p_tabla_destino = 'proveedores' THEN
+        DELETE FROM proveedores WHERE id_proveedor = p_id;
+
+    ELSEIF p_tabla_destino = 'roles' THEN
+        DELETE FROM roles WHERE id_rol = p_id;
+
+    ELSEIF p_tabla_destino = 'sensores' THEN
+        DELETE FROM sensores WHERE id_sensor = p_id;
+
+    ELSEIF p_tabla_destino = 'usuarios' THEN
+        DELETE FROM usuarios WHERE id_usuario = p_id;
+
+    ELSEIF p_tabla_destino = 'ventas' THEN
+        DELETE FROM ventas WHERE id_venta = p_id;
+        
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: El nombre de la tabla especificada no es válido.';
+    END IF;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `insertar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar` (IN `p_tabla_destino` VARCHAR(50), IN `p_id` INT, IN `p_capacidad` INT, IN `p_estado_cadena_frio` VARCHAR(50), IN `p_id_usuario` INT, IN `p_telefono_cliente` VARCHAR(50), IN `p_id_lote` INT, IN `p_id_usuario_veterinario` INT, IN `p_fecha_control` DATETIME, IN `p_cantidad_bajas` INT, IN `p_observaciones_veterinarias` VARCHAR(255), IN `p_id_venta_detalle` INT, IN `p_id_producto_detalle` INT, IN `p_cantidad_detalle` INT, IN `p_precio_unitario` DECIMAL(10,2), IN `p_id_lote_faena` INT, IN `p_fecha_faena` DATETIME, IN `p_cantidad_aves_faenadas` INT, IN `p_peso_total_obtenido` DECIMAL(10,2), IN `p_nombre_galpon` VARCHAR(100), IN `p_capacidad_maxima` VARCHAR(50), IN `p_id_proveedor_insumo` INT, IN `p_descripcion_insumo` VARCHAR(200), IN `p_cantidad_insumo` INT, IN `p_fecha_compra` DATETIME, IN `p_id_galpon_lote` INT, IN `p_fecha_ingreso` DATETIME, IN `p_cantidad_inicial` INT, IN `p_raza_genetica` VARCHAR(100), IN `p_id_sensor_medicion` INT, IN `p_valor_registrado` DECIMAL(10,2), IN `p_fecha_medicion` DATETIME, IN `p_id_camara_prod` INT, IN `p_nombre_producto` VARCHAR(100), IN `p_stock_disponible` INT, IN `p_fecha_envasado` DATETIME, IN `p_telefono_proveedor` VARCHAR(50), IN `p_nombre_rol` VARCHAR(50), IN `p_tipo_sensor` VARCHAR(50), IN `p_ubicacion` VARCHAR(100), IN `p_email` VARCHAR(150), IN `p_contrasena` VARCHAR(255), IN `p_id_rol` INT, IN `p_id_cliente_venta` INT, IN `p_fecha_venta` DATETIME, IN `p_total_facturado` DECIMAL(12,2))   BEGIN
+
+        IF p_tabla_destino = 'camaras_frigorificas' THEN
+        INSERT INTO camaras_frigorificas (capacidad, estado_cadena_frio) 
+        VALUES (p_capacidad, p_estado_cadena_frio);
+
+    ELSEIF p_tabla_destino = 'clientes' THEN
+        INSERT INTO clientes (id_usuario, telefono) 
+        VALUES (p_id_usuario, p_telefono_cliente);
+
+    ELSEIF p_tabla_destino = 'controles_sanidad' THEN
+        INSERT INTO controles_sanidad (id_lote, id_usuario_veterinario, fecha_control, cantidad_bajas, observaciones_veterinarias) 
+        VALUES (p_id_lote, p_id_usuario_veterinario, p_fecha_control, p_cantidad_bajas, p_observaciones_veterinarias);
+
+    ELSEIF p_tabla_destino = 'detalles_ventas' THEN
+        INSERT INTO detalles_ventas (id_venta, id_producto, cantidad, precio_unitario) 
+        VALUES (p_id_venta_detalle, p_id_producto_detalle, p_cantidad_detalle, p_precio_unitario);
+
+    ELSEIF p_tabla_destino = 'faenas' THEN
+        INSERT INTO faenas (id_lote, fecha_faena, cantidad_aves_faenadas, peso_total_obtenido) 
+        VALUES (p_id_lote_faena, p_fecha_faena, p_cantidad_aves_faenadas, p_peso_total_obtenido);
+
+    ELSEIF p_tabla_destino = 'galpones' THEN
+        INSERT INTO galpones (nombre_galpon, capacidad_maxima) 
+        VALUES (p_nombre_galpon, p_capacidad_maxima);
+
+    ELSEIF p_tabla_destino = 'insumos_compras' THEN
+        INSERT INTO insumos_compras (id_proveedor, descripcion_insumo, cantidad, fecha_compra) 
+        VALUES (p_id_proveedor_insumo, p_descripcion_insumo, p_cantidad_insumo, p_fecha_compra);
+
+    ELSEIF p_tabla_destino = 'lotes_aves' THEN
+        INSERT INTO lotes_aves (id_galpon, fecha_ingreso, cantidad_inicial, raza_genetica) 
+        VALUES (p_id_galpon_lote, p_fecha_ingreso, p_cantidad_inicial, p_raza_genetica);
+
+    ELSEIF p_tabla_destino = 'medicion_sensores' THEN
+        INSERT INTO medicion_sensores (id_sensor, valor_registrado, fecha_medicion) 
+        VALUES (p_id_sensor_medicion, p_valor_registrado, p_fecha_medicion);
+
+    ELSEIF p_tabla_destino = 'productos_stock' THEN
+        INSERT INTO productos_stock (id_camara, nombre_producto, stock_disponible, fecha_envasado) 
+        VALUES (p_id_camara_prod, p_nombre_producto, p_stock_disponible, p_fecha_envasado);
+
+    ELSEIF p_tabla_destino = 'proveedores' THEN
+        INSERT INTO proveedores (telefono) 
+        VALUES (p_telefono_proveedor);
+
+    ELSEIF p_tabla_destino = 'roles' THEN
+        INSERT INTO roles (nombre_rol) 
+        VALUES (p_nombre_rol);
+
+    ELSEIF p_tabla_destino = 'sensores' THEN
+        INSERT INTO sensores (tipo_sensor, ubicacion) 
+        VALUES (p_tipo_sensor, p_ubicacion);
+
+    ELSEIF p_tabla_destino = 'usuarios' THEN
+        INSERT INTO usuarios (email, contrasena, id_rol) 
+        VALUES (p_email, p_contrasena, p_id_rol);
+
+    ELSEIF p_tabla_destino = 'ventas' THEN
+        INSERT INTO ventas (id_cliente, fecha_venta, total_facturado) 
+        VALUES (p_id_cliente_venta, p_fecha_venta, p_total_facturado);
+        
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: El nombre de la tabla especificada no es válido.';
+    END IF;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `listar_tabla`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_tabla` (IN `p_tabla` VARCHAR(30))   BEGIN 
+
+    IF p_tabla = 'camaras_frigorificas' THEN
+        SELECT * FROM camaras_frigorificas;
+
+    ELSEIF p_tabla = 'clientes' THEN
+        SELECT * FROM clientes;
+
+    ELSEIF p_tabla = 'controles_sanidad' THEN
+        SELECT * FROM controles_sanidad;
+
+    ELSEIF p_tabla = 'detalles_ventas' THEN
+        SELECT * FROM detalles_ventas;
+
+    ELSEIF p_tabla = 'faenas' THEN
+        SELECT * FROM faenas;
+
+    ELSEIF p_tabla = 'galpones' THEN
+        SELECT * FROM galpones;
+
+    ELSEIF p_tabla = 'insumos_compras' THEN
+        SELECT * FROM insumos_compras;
+
+    ELSEIF p_tabla = 'lotes_aves' THEN
+        SELECT * FROM lotes_aves;
+
+    ELSEIF p_tabla = 'medicion_sensores' THEN
+        SELECT * FROM medicion_sensores;
+
+    ELSEIF p_tabla = 'productos_stock' THEN
+        SELECT * FROM productos_stock;
+
+    ELSEIF p_tabla = 'proveedores' THEN
+        SELECT * FROM proveedores;
+
+    ELSEIF p_tabla = 'roles' THEN
+        SELECT * FROM roles;
+
+    ELSEIF p_tabla = 'sensores' THEN
+        SELECT * FROM sensores;
+
+    ELSEIF p_tabla = 'usuarios' THEN
+        SELECT * FROM usuarios;
+
+    ELSEIF p_tabla = 'ventas' THEN
+        SELECT * FROM ventas;
+        
+    ELSE
+        SELECT 'La tabla especificada no existe o no está soportada' AS Error;
+    END IF;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
