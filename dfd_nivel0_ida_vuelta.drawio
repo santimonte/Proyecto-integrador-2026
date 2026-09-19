@@ -1,0 +1,133 @@
+<mxfile host="Electron">
+  <diagram name="DFD Nivel 0 - Ida y Vuelta" id="dfd0-idavuelta">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="s0" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="SECTOR SANITARIO" vertex="1">
+          <mxGeometry height="60" width="160" x="620" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="GALPONES" vertex="1">
+          <mxGeometry height="60" width="160" x="1095" y="638" as="geometry" />
+        </mxCell>
+        <mxCell id="s7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="SECTOR DE CRIANZA" vertex="1">
+          <mxGeometry height="60" width="160" x="257" y="884" as="geometry" />
+        </mxCell>
+        <mxCell id="s9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="OPERARIO DE PLANTA" vertex="1">
+          <mxGeometry height="60" width="160" x="183" y="371" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="GESTOR DE INVENTARIO" vertex="1">
+          <mxGeometry height="60" width="160" x="755" y="1031" as="geometry" />
+        </mxCell>
+        <mxCell id="s6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="FRIGORIFICO" vertex="1">
+          <mxGeometry height="60" width="160" x="485" y="1031" as="geometry" />
+        </mxCell>
+        <mxCell id="s8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="SECTOR LOGISTICA" vertex="1">
+          <mxGeometry height="60" width="160" x="145" y="638" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR ADMINISTRATIVO" vertex="1">
+          <mxGeometry height="60" width="160" x="880" y="166" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR ADMINISTRATIVO #" vertex="1">
+          <mxGeometry height="60" width="160" x="1057" y="371" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR ALIMENTICIO" vertex="1">
+          <mxGeometry height="60" width="160" x="983" y="884" as="geometry" />
+        </mxCell>
+        <mxCell id="s10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR DE EMPAQUE" vertex="1">
+          <mxGeometry height="60" width="160" x="361" y="166" as="geometry" />
+        </mxCell>
+        <mxCell id="sc" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=13;fontStyle=1;" value="SISTEMA DE&#xa;PRODUCTORA AVICOLA" vertex="1">
+          <mxGeometry height="180" width="180" x="610" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="e0a" edge="1" parent="1" source="s0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.35;exitY=1;entryX=0.42;entryY=0;" target="sc" value="Registrar controles de salud">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.58;exitY=0;entryX=0.65;entryY=1;" target="s0" value="devolver nuevo total de unidades">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.77;exitY=0.08;entryX=0.5;entryY=1;" target="s1" value="Solicitar factura electronica / Generar comprobante digital">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2a" edge="1" parent="1" source="s2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0;exitY=0.35;entryX=0.95;entryY=0.24;" target="sc" value="Subir datos de empleados">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.95;exitY=0.34;entryX=0;entryY=0.65;" target="s2" value="Devolver antiguedad y asignacion de roles">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3a" edge="1" parent="1" source="s3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0;exitY=0.5;entryX=1;entryY=0.57;" target="sc" value="Devolver alarma de deteccion de gases toxicos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.83;exitY=0.83;entryX=0.35;entryY=0;" target="s4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YACo8aUwa4vomHuowd33-1" connectable="0" parent="e4b" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="solicitar orden de compra" vertex="1">
+          <mxGeometry relative="1" x="0.3615" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4a" edge="1" parent="1" source="s4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.65;exitY=0;entryX=0.93;entryY=0.83;" target="sc" value="Emitir orden de compra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5a" edge="1" parent="1" source="s5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.5;exitY=0;entryX=0.64;entryY=0.98;" target="sc" value="Registrar animales">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6a" edge="1" parent="1" source="s6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.35;exitY=0;entryX=0.31;entryY=0.98;" target="sc" value="cargar datos del vehiculo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.41;exitY=0.98;entryX=0.65;entryY=0;" target="s6" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="684.24" y="889.94" />
+              <mxPoint x="589.06" y="889.94" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YACo8aUwa4vomHuowd33-2" connectable="0" parent="e6b" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="devolver ubicacion" vertex="1">
+          <mxGeometry relative="1" x="0.5994" y="-4" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7a" edge="1" parent="1" source="s7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.35;exitY=0;entryX=0.07;entryY=0.83;" target="sc" value="subir aves marcadas / Subir datos del lote">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7b" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.17;exitY=0.83;entryX=0.65;entryY=0;" value="devolver estado / Devolver estado categorizado / Generar monitoreo del registro">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="636.3603896932082" y="723.6396103067918" as="sourcePoint" />
+            <mxPoint x="361.0000000000002" y="944" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8a" edge="1" parent="1" source="s8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=1;exitY=0.35;entryX=0;entryY=0.52;" target="sc" value="Subir datos del pedido">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0;exitY=0.62;entryX=1;entryY=0.65;" target="s8" value="Devolver pedido con producto y fecha de entrega">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9a" edge="1" parent="1" source="s9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=1;exitY=0.35;entryX=0.05;entryY=0.24;" target="sc" value="Registrar resultados de la faena">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.05;exitY=0.34;entryX=1;entryY=0.65;" target="s9" value="Guardar resultado y realizar calculo de merma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10b" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;labelBackgroundColor=#ffffff;endArrow=block;exitX=0.23;exitY=0.08;entryX=0.5;entryY=1;" target="s10" value="informacion de producto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YACo8aUwa4vomHuowd33-5" edge="1" parent="1" source="sc" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="890" />
+              <mxPoint x="800" y="890" />
+            </Array>
+            <mxPoint x="780" y="730" as="sourcePoint" />
+            <mxPoint x="800" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YACo8aUwa4vomHuowd33-6" connectable="0" parent="YACo8aUwa4vomHuowd33-5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="devolver estado categorizado" vertex="1">
+          <mxGeometry relative="1" x="0.6971" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
