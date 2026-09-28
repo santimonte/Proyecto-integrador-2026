@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-    private static final String URL = "jdbc:mysql://localhost:3306/proyectoavicola";
+    private static final String URL = "jdbc:mysql://localhost:3306/proyectoavicola?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
@@ -18,4 +18,3 @@ public class Conexion {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
-
