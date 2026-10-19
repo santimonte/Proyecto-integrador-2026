@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Panel Principal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="assets/logo.png" alt="Avícola San Martín" class="logo">
+            <h2>Avícola San Martín</h2>
+        </div>
+        <div class="user-info">
+            <span id="userEmail">Cargando usuario...</span>
+            <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Menú Lateral -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">📊 Panel Principal</a></li>
+                    <li><a href="galpones.html">🐔 Galpones y Aves</a></li>
+                    <li><a href="sensores.html">🌡️ Sensores y Clima</a></li>
+                    <li><a href="clientes.html">👥 Clientes y Ventas</a></li>
+                    <li><a href="stock.html">📦 Stock e Insumos</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Central -->
+        <main class="content">
+            <section class="welcome-banner">
+                <h1>Bienvenido al Sistema de Gestión</h1>
+                <p>Monitoreo en tiempo real de galpones, producción y sensores.</p>
+            </section>
+
+            <!-- Tarjetas de Resumen / Métricas Rápidas -->
+            <section class="cards-grid">
+                <div class="card">
+                    <h3>Galpones Activos</h3>
+                    <p class="card-value" id="totalGalpones">--</p>
+                </div>
+                <div class="card">
+                    <h3>Temperatura Promedio</h3>
+                    <p class="card-value" id="tempPromedio">-- °C</p>
+                </div>
+                <div class="card">
+                    <h3>Humedad Promedio</h3>
+                    <p class="card-value" id="humedadPromedio">-- %</p>
+                </div>
+                <div class="card">
+                    <h3>Alertas Activas</h3>
+                    <p class="card-value alert-text" id="totalAlertas">0</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

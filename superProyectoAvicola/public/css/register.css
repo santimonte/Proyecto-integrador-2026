@@ -1,0 +1,30 @@
+/* Estilos exclusivos para register.html */
+body {
+    background: linear-gradient(135deg, #0b132b, #1c2541);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+.card img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border: 2px solid #ffc107 !important;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}

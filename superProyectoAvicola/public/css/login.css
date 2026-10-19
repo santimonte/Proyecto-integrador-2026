@@ -1,0 +1,30 @@
+/* Estilos exclusivos para login.html */
+body {
+    background: linear-gradient(135deg, #1c2541, #0b132b);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+.card img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border: 2px solid #ffc107 !important;
+}
+
+.btn-dark {
+    background-color: #0b132b;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-dark:hover {
+    background-color: #1c2541;
+}

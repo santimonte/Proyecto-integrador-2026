@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Inicio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS Exclusivo del Index -->
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <!-- Navbar con el nombre y el logo -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-4">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <!-- Asegúrate de guardar la imagen del logo en src/main/webapp/img/logo.jpg -->
+                <img src="img/logo.png" alt="Logo Avícola San Martín">
+                <span>Avícola San Martín</span>
+            </a>
+            <div class="d-flex gap-2">
+                <a href="login.html" class="btn btn-outline-light btn-sm px-3">Iniciar Sesión</a>
+                <a href="register.html" class="btn btn-warning btn-sm px-3 text-dark fw-bold">Registrarse</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero de Presentación -->
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 mb-3">🐔 Productora Avícola San Martín</h1>
+            <p class="lead text-light mb-4 col-md-8 mx-auto">
+                Tecnología e innovación al servicio de la producción avícola. Control ambiental en tiempo real, trazabilidad de lotes y gestión inteligente de la cadena de frío.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="register.html" class="btn btn-warning btn-lg text-dark fw-bold px-4">Comenzar Ahora</a>
+                <a href="login.html" class="btn btn-outline-light btn-lg px-4">Acceso al Sistema</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal (Breve introducción y Quiénes somos) -->
+    <main class="container my-5">
+        <div class="row g-4">
+            <!-- Quiénes Somos -->
+            <div class="col-md-6">
+                <div class="card card-custom p-4 h-100 bg-white">
+                    <h3 class="section-title">¿Quiénes Somos?</h3>
+                    <p class="text-secondary">
+                        En <strong>Avícola San Martín</strong> somos una empresa líder dedicada a la producción, procesamiento y distribución avícola de alta calidad. Combinamos décadas de experiencia en el sector agropecuario con sistemas tecnológicos de vanguardia para garantizar la seguridad alimentaria y el bienestar animal en cada etapa del proceso productivo.
+                    </p>
+                    <p class="text-secondary">
+                        Nuestro compromiso es ofrecer productos frescos y seguros, optimizando los recursos mediante controles automatizados e IoT en galpones y cámaras frigoríficas.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Qué encontrarás en la plataforma -->
+            <div class="col-md-6">
+                <div class="card card-custom p-4 h-100 bg-white">
+                    <h3 class="section-title">Nuestra Plataforma</h3>
+                    <p class="text-secondary">
+                        Este sistema integral desarrollado bajo estrictos estándares de Programación Orientada a Objetos (POO) permite gestionar de forma centralizada todas las operaciones de la planta:
+                    </p>
+                    <ul class="text-secondary">
+                        <li><strong>Monitoreo Ambiental IoT:</strong> Control de temperatura y humedad en galpones mediante sensores en tiempo real[cite: 4].</li>
+                        <li><strong>Gestión de Lotes y Sanidad:</strong> Trazabilidad completa desde la cría hasta la faena y controles veterinarios[cite: 4].</li>
+                        <li><strong>Control de Stock y Cadena de Frío:</strong> Seguimiento en cámaras frigoríficas y distribución comercial eficiente[cite: 4].</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-muted bg-white border-top mt-5">
+        <small>&copy; 2026 Avícola San Martín - Proyecto Integrador POO.</small>
+    </footer>
+
+    <!-- Script Exclusivo del Index -->
+    <script src="js/index.js"></script>
+</body>
+</html>
