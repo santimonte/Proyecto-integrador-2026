@@ -35,19 +35,22 @@ public class IusuarioDaoImplement implements IusuarioDao {
 
     @Override
     public boolean add(Usuario usuario) {
-        // En insertar: p_id_rol_usuario = 42, p_email_usuario = 43, p_contrasena_usuario = 44
-        String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, NULL, NULL)}";
-        
+        // Consulta SQL directa a la tabla usuarios
+        String sql = "INSERT INTO usuarios (id_rol, email, contrasena) VALUES (?, ?, ?)";
+
         try (Connection con = Conexion.getConexion();
-             CallableStatement cs = con.prepareCall(sql)) {
-            
-            cs.setString(1, "usuarios");
-            cs.setInt(42, usuario.getIdRol());
-            cs.setString(43, usuario.getEmail());
-            cs.setString(44, usuario.getContrasena());
-            
-            cs.execute();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            // Si el objeto usuario no trae un idRol asignado, usamos el rol 1 (Cliente)
+            int idRol = (usuario.getIdRol() > 0) ? usuario.getIdRol() : 1;
+
+            ps.setInt(1, idRol); // Envía 1 a la columna id_rol
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, usuario.getContrasena());
+
+            ps.executeUpdate(); // Ejecutamos la inserción
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -118,6 +121,36 @@ public class IusuarioDaoImplement implements IusuarioDao {
         }
         return u;
     }
+    
+    @Override
+    public Usuario validarLogin(String email, String contrasena) {
+        Usuario usuario = null;
+        String sql = "SELECT * FROM usuarios WHERE email = ? AND contrasena = ?";
+
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, email);
+            ps.setString(2, contrasena);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setContrasena(rs.getString("contrasena"));
+                    usuario.setIdRol(rs.getInt("id_rol"));
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return usuario; // Si coincide, devuelve el objeto usuario; si no, devuelve null (credenciales incorrectas)
+    }
+
+    
 }
 
 
