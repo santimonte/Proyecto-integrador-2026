@@ -59,25 +59,29 @@ public class IusuarioDaoImplement implements IusuarioDao {
 
     @Override
     public boolean update(Usuario usuario) {
-        // En actualizar: p_id = 2, p_id_rol_usuario = 42, p_email_usuario = 43, p_contrasena_usuario = 44
-        String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, NULL, NULL)}";
+        // CORREGIDO: Tiene exactamente los 46 casilleros de tu base de datos.
+        // ? (1) | ? (2) | 38 NULLs | ? (3) | ? (4) | ? (5) | 3 NULLs finales.
+        String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, NULL, NULL, NULL)}";
         
         try (Connection con = Conexion.getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "usuarios");
-            cs.setInt(2, usuario.getIdUsuario());
-            cs.setInt(42, usuario.getIdRol());
-            cs.setString(43, usuario.getEmail());
-            cs.setString(44, usuario.getContrasena());
+            // Los índices numéricos representan ESTRICTAMENTE el orden de los signos "?" de izquierda a derecha
+            cs.setString(1, "usuarios");              // 1er "?" -> p_tabla_destino
+            cs.setInt(2, usuario.getIdUsuario());     // 2do "?" -> p_id
+            cs.setString(3, usuario.getEmail());       // 3er "?" -> p_email
+            cs.setString(4, usuario.getContrasena());  // 4to "?" -> p_contrasena
+            cs.setInt(5, usuario.getIdRol());         // 5to "?" -> p_id_rol
             
             cs.execute();
             return true;
         } catch (SQLException e) {
+            System.out.println("=== ERROR REAL EN UPDATE ===");
             e.printStackTrace();
             return false;
         }
     }
+
 
     @Override
     public boolean delete(int id) {
@@ -98,16 +102,17 @@ public class IusuarioDaoImplement implements IusuarioDao {
     }
 
     @Override
-    public Usuario findById(int id) { // Corregido: Retorna Usuario en lugar de Rol
+    public Usuario findById(int id) { 
         Usuario u = null;
-        // En Buscar_por_id: p_id_usuario es el decimocuarto parámetro (posición 14)
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL)}";
+        // Consulta directa a la tabla usuarios para evitar leer los 15 resultsets del procedure
+        String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
         
         try (Connection con = Conexion.getConexion();
-             CallableStatement cs = con.prepareCall(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
             
-            cs.setInt(14, id);
-            try (ResultSet rs = cs.executeQuery()) {
+            ps.setInt(1, id); 
+            
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     u = new Usuario();
                     u.setIdUsuario(rs.getInt("id_usuario"));
@@ -117,40 +122,12 @@ public class IusuarioDaoImplement implements IusuarioDao {
                 }
             }
         } catch (SQLException e) {
+            System.out.println("=== ERROR SQL EN FINDBYID ===");
             e.printStackTrace();
         }
         return u;
     }
-    
-    @Override
-    public Usuario validarLogin(String email, String contrasena) {
-        Usuario usuario = null;
-        String sql = "SELECT * FROM usuarios WHERE email = ? AND contrasena = ?";
-
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            
-            ps.setString(1, email);
-            ps.setString(2, contrasena);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    usuario = new Usuario();
-                    usuario.setIdUsuario(rs.getInt("id_usuario"));
-                    usuario.setEmail(rs.getString("email"));
-                    usuario.setContrasena(rs.getString("contrasena"));
-                    usuario.setIdRol(rs.getInt("id_rol"));
-                }
-            }
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return usuario; // Si coincide, devuelve el objeto usuario; si no, devuelve null (credenciales incorrectas)
-    }
-
-    
+      
 }
 
 

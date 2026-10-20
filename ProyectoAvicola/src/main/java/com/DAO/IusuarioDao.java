@@ -9,5 +9,4 @@ public interface IusuarioDao {
     boolean update(Usuario usuario);
     boolean delete(int id);
     Usuario findById(int id);
-    public Usuario validarLogin(String email, String contrasena);
 }
