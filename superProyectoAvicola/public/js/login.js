@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
 
                 if (data.exito) {
-                    // Guardamos una bandera en el navegador indicando que hay sesión activa
-                    localStorage.setItem("usuarioLogueado", JSON.stringify({ email }));
-                    window.location.href = "dashboard.html"; // Te lleva al panel principal
+                    // CERO localStorage ni ningún 'set'. 
+                    // La sesión ya quedó creada en Java (HttpSession) y Tomcat maneja la cookie automáticamente.
+                    window.location.href = "./dashboard.html"; 
                 } else {
-                    alert(data.error || "Email o contraseña incorrectos.");
+                    alert(data.error || data.mensaje || "Email o contraseña incorrectos.");
                 }
             } catch (error) {
                 console.error("Error al conectar con el servidor:", error);
