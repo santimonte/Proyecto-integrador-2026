@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-10-2026 a las 04:09:50
+-- Tiempo de generación: 20-10-2026 a las 16:36:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -138,8 +138,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar` (IN `p_tabla_destino` V
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Buscar_por_id` (IN `p_id_camara` INT, IN `p_id_cliente` INT, IN `p_id_control` INT, IN `p_id_detalle_venta` INT, IN `p_id_faena` INT, IN `p_id_galpon` INT, IN `p_id_insumos_compras` INT, IN `p_lote` INT, IN `p_id_medicion` INT, IN `p_id_productos` INT, IN `p_id_proveedor` INT, IN `p_id_rol` INT, IN `p_id_sensor` INT, IN `p_id_usuario` INT, IN `p_id_venta` INT)   BEGIN 
-
-    SELECT * FROM camaras_frigorificas WHERE id_camaras = p_id_camara;
+    -- 1. CORREGIDO: id_camara (en singular)
+    SELECT * FROM camaras_frigorificas WHERE id_camara = p_id_camara;
     
     SELECT * FROM clientes WHERE id_cliente = p_id_cliente;
     
@@ -151,13 +151,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Buscar_por_id` (IN `p_id_camara` IN
     
     SELECT * FROM galpones WHERE id_galpon = p_id_galpon;
     
-    SELECT * FROM insumos_compras WHERE id_insumos_compras = p_id_insumos_compras;
+    -- 2. CORREGIDO: La columna real es id_compra
+    SELECT * FROM insumos_compras WHERE id_compra = p_id_insumos_compras;
     
     SELECT * FROM lotes_aves WHERE id_lote = p_lote;
     
     SELECT * FROM medicion_sensores WHERE id_medicion = p_id_medicion;
     
-    SELECT * FROM productos_stock WHERE id_productos = p_id_productos;
+    -- 3. CORREGIDO: La columna real es id_producto
+    SELECT * FROM productos_stock WHERE id_producto = p_id_productos;
     
     SELECT * FROM proveedores WHERE id_proveedor = p_id_proveedor;
     
@@ -168,7 +170,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Buscar_por_id` (IN `p_id_camara` IN
     SELECT * FROM usuarios WHERE id_usuario = p_id_usuario;
     
     SELECT * FROM ventas WHERE id_venta = p_id_venta;
-
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar` (IN `p_tabla_destino` VARCHAR(50), IN `p_id` INT)   BEGIN
@@ -554,7 +555,7 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id_usuario`, `email`, `contrasena`, `id_rol`) VALUES
 (4, 'messi@mail', '123', 1),
-(5, 'micho@mail.com', '12345', 1);
+(6, 'nuevo_usuario@gmail.com', 'claveSegura123', 1);
 
 -- --------------------------------------------------------
 
@@ -762,7 +763,7 @@ ALTER TABLE `sensores`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
