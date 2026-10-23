@@ -10,11 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 // Petición fetch al Servlet de Java
-                const response = await fetch('http://localhost:8080/ProyectoAvicola/UsuarioServlet', {
+                const response = await fetch('http://127.0.0.1:8080/ProyectoAvicola/usuarios', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        accion: 'register',
                         email: email,
                         contrasena: contrasena
                     })
@@ -22,7 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const data = await response.json();
 
-                if (data.exito) {
+                // Validamos si la respuesta HTTP fue exitosa (201 Created)
+                if (response.ok) {
                     alert("¡Registro exitoso! Ya puedes iniciar sesión.");
                     window.location.href = "login.html"; // Redirige al login
                 } else {

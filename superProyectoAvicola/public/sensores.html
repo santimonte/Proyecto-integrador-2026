@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Gestión de Sensores</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sensores.css">
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Avícola San Martín" class="logo">
+            <h2>Avícola San Martín</h2>
+        </div>
+        <div class="user-info">
+            <span id="userEmail">Cargando usuario...</span>
+            <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Menú Lateral -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">📊 Panel Principal</a></li>
+                    <li><a href="galpones.html">🐔 Galpones y Aves</a></li>
+                    <li><a href="sensores.html" class="active">🌡️ Sensores y Clima</a></li>
+                    <li><a href="clientes.html">👥 Clientes y Ventas</a></li>
+                    <li><a href="stock.html">📦 Stock e Insumos</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Central -->
+        <main class="content">
+            <div class="welcome-banner">
+                <h1>Gestión de Sensores</h1>
+                <p>Monitorea y registra los dispositivos de temperatura y humedad instalados en los galpones.</p>
+            </div>
+
+            <div class="sensores-grid-layout">
+                <!-- Formulario para agregar sensor -->
+                <div class="card form-card">
+                    <h3>Registrar Nuevo Sensor</h3>
+                    <form id="formSensor">
+                        <div class="mb-3">
+                            <label for="tipoSensor" class="form-label">Tipo de Sensor</label>
+                            <input type="text" class="form-control" id="tipoSensor" required placeholder="Ej: Temperatura / Humedad">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ubicacion" class="form-label">Ubicación / Galpón</label>
+                            <input type="text" class="form-control" id="ubicacion" required placeholder="Ej: Galpón A - Sector 1">
+                        </div>
+                        <button type="submit" class="btn-submit">Guardar Sensor</button>
+                    </form>
+                </div>
+
+                <!-- Tabla de sensores existentes -->
+                <div class="card table-card">
+                    <h3>Sensores Registrados</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo</th>
+                                    <th>Ubicación</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaSensoresBody">
+                                <tr>
+                                    <td colspan="3" style="text-align: center;">Cargando sensores...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/sensores.js"></script>
+</body>
+</html>

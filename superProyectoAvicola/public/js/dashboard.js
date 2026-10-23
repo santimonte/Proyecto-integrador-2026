@@ -1,28 +1,27 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Verificar si hay sesión activa (ej: desde localStorage o sessionStorage)
-    const emailUsuario = localStorage.getItem("usuarioEmail");
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        // Le preguntamos al servidor Java si la sesión sigue activa
+        const response = await fetch('http://127.0.0.1:8080/ProyectoAvicola/usuarios?accion=sesion', {
+            method: 'GET',
+            credentials: 'include' // Vital para enviar la cookie de sesión a Tomcat
+        });
 
-    if (!emailUsuario) {
-        // Si no está logueado, redirigir al login
+        if (response.ok) {
+            const usuario = await response.json();
+            // Mostramos el email que viene directo de la sesión de Java
+            document.getElementById("userEmail").textContent = usuario.email;
+        } else {
+            // Si Java dice que no hay sesión, lo mandamos al login
+            window.location.href = "login.html";
+        }
+    } catch (error) {
+        console.error("Error al verificar la sesión:", error);
         window.location.href = "login.html";
-        return;
     }
 
-    // Mostrar el email en la barra superior
-    document.getElementById("userEmail").textContent = emailUsuario;
-
-    // 2. Controlar Cierre de Sesión
+    // Botón de Cerrar Sesión
     document.getElementById("btnLogout").addEventListener("click", () => {
-        localStorage.removeItem("usuarioEmail");
-        localStorage.removeItem("idRol");
+        // Opcional: Podrías invalidar la sesión en Java, por ahora redirigimos al login
         window.location.href = "login.html";
     });
-
-    // 3. (Opcional) Cargar métricas iniciales del servidor Tomcat
-    cargarResumenInicio();
 });
-
-function cargarResumenInicio() {
-    // Aquí podemos hacer un fetch al backend para traer métricas de los sensores/galpones
-    console.log("Cargando datos del panel principal...");
-}

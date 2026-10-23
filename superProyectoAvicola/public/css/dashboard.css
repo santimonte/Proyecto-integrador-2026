@@ -1,0 +1,197 @@
+/* ==========================================
+   ESTILOS DASHBOARD - AVÍCOLA SAN MARTÍN
+   ========================================== */
+
+:root {
+    --bg-dark: #121927;
+    --bg-card: #1c2536;
+    --bg-sidebar: #0f1523;
+    --primary-yellow: #ffc107;
+    --primary-yellow-hover: #e0a800;
+    --text-white: #ffffff;
+    --text-muted: #9a9ea9;
+    --border-color: #2b3648;
+    --danger-red: #ff4d4f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Barra de navegación superior --- */
+.navbar {
+    background-color: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-container .logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-yellow);
+    object-fit: cover;
+}
+
+.logo-container h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-white);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#userEmail {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.btn-logout {
+    background-color: transparent;
+    color: var(--primary-yellow);
+    border: 1px solid var(--primary-yellow);
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: var(--primary-yellow);
+    color: #000;
+}
+
+/* --- Contenedor Principal --- */
+.main-container {
+    display: flex;
+    flex: 1;
+}
+
+/* --- Menú Lateral (Sidebar) --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem 1rem;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar nav ul li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+    background-color: var(--primary-yellow);
+    color: #000;
+    font-weight: 700;
+}
+
+/* --- Contenido Central --- */
+.content {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #25334a 100%);
+    border: 1px solid var(--border-color);
+    padding: 1.8rem;
+    border-radius: 12px;
+}
+
+.welcome-banner h1 {
+    font-size: 1.8rem;
+    color: var(--primary-yellow);
+    margin-bottom: 6px;
+}
+
+.welcome-banner p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* --- Grilla de Tarjetas / Métricas --- */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-yellow);
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-white);
+}
+
+.alert-text {
+    color: var(--danger-red);
+}
