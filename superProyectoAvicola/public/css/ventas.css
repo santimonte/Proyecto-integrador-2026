@@ -1,0 +1,118 @@
+/* ==========================================
+   ESTILOS MÓDULO VENTAS - AVÍCOLA SAN MARTÍN
+   (Reutiliza las variables y tarjetas de dashboard.css)
+   ========================================== */
+
+.ventas-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .ventas-grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Formulario --- */
+.form-card .form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.form-card .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-white);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-card .form-control:focus {
+    border-color: var(--primary-yellow);
+}
+
+/* Select y fecha en tema oscuro */
+.form-card select.form-control {
+    cursor: pointer;
+}
+
+.form-card input[type="date"].form-control {
+    color-scheme: dark;
+}
+
+.form-error {
+    color: var(--danger-red);
+    font-size: 0.85rem;
+    min-height: 1.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.btn-submit {
+    background-color: var(--primary-yellow);
+    color: #000;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-yellow-hover);
+}
+
+/* --- Tabla de datos --- */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 5px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    color: var(--primary-yellow);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    color: var(--text-white);
+    font-size: 0.95rem;
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.data-table .col-monto {
+    font-weight: 700;
+    color: var(--primary-yellow);
+    white-space: nowrap;
+}
+
+.data-table .fila-vacia {
+    text-align: center;
+    color: var(--text-muted);
+}
