@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Clientes y Ventas</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/ventas.css">
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Avícola San Martín" class="logo">
+            <h2>Avícola San Martín</h2>
+        </div>
+        <div class="user-info">
+            <span id="userEmail">Modo demostración</span>
+            <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Menú Lateral -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">📊 Panel Principal</a></li>
+                    <li><a href="galpones.html">🐔 Galpones y Aves</a></li>
+                    <li><a href="sensores.html">🌡️ Sensores y Clima</a></li>
+                    <li><a href="ventas.html" class="active">👥 Clientes y Ventas</a></li>
+                    <li><a href="stock.html">📦 Stock e Insumos</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Central -->
+        <main class="content">
+            <div class="welcome-banner">
+                <h1>Gestión de Ventas</h1>
+                <p>Registra las ventas realizadas a los clientes y consulta el historial de facturación.</p>
+            </div>
+
+            <!-- Resumen rápido -->
+            <section class="cards-grid">
+                <div class="card">
+                    <h3>Ventas Registradas</h3>
+                    <p class="card-value" id="totalVentas">0</p>
+                </div>
+                <div class="card">
+                    <h3>Total Facturado</h3>
+                    <p class="card-value" id="montoTotal">$ 0,00</p>
+                </div>
+            </section>
+
+            <div class="ventas-grid-layout">
+                <!-- Formulario para registrar una venta -->
+                <div class="card form-card">
+                    <h3>Registrar Nueva Venta</h3>
+                    <form id="formVenta" novalidate>
+                        <div class="mb-3">
+                            <label for="clienteVenta" class="form-label">Cliente</label>
+                            <select class="form-control" id="clienteVenta" required>
+                                <option value="">Seleccionar cliente...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaVenta" class="form-label">Fecha de la venta</label>
+                            <input type="date" class="form-control" id="fechaVenta" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="totalVenta" class="form-label">Total facturado ($)</label>
+                            <input type="number" class="form-control" id="totalVenta" required min="0.01" step="0.01" placeholder="Ej: 125000.50">
+                        </div>
+                        <p class="form-error" id="mensajeError" role="alert"></p>
+                        <button type="submit" class="btn-submit">Guardar Venta</button>
+                    </form>
+                </div>
+
+                <!-- Tabla de ventas existentes -->
+                <div class="card table-card">
+                    <h3>Ventas Registradas</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Venta</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total Facturado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaVentasBody">
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">Cargando ventas...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/ventas.js"></script>
+</body>
+</html>
