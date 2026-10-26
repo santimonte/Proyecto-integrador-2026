@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-10-2026 a las 16:36:09
+-- Tiempo de generación: 26-10-2026 a las 16:36:31
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -137,39 +137,52 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar` (IN `p_tabla_destino` V
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Buscar_por_id` (IN `p_id_camara` INT, IN `p_id_cliente` INT, IN `p_id_control` INT, IN `p_id_detalle_venta` INT, IN `p_id_faena` INT, IN `p_id_galpon` INT, IN `p_id_insumos_compras` INT, IN `p_lote` INT, IN `p_id_medicion` INT, IN `p_id_productos` INT, IN `p_id_proveedor` INT, IN `p_id_rol` INT, IN `p_id_sensor` INT, IN `p_id_usuario` INT, IN `p_id_venta` INT)   BEGIN 
-    -- 1. CORREGIDO: id_camara (en singular)
-    SELECT * FROM camaras_frigorificas WHERE id_camara = p_id_camara;
-    
-    SELECT * FROM clientes WHERE id_cliente = p_id_cliente;
-    
-    SELECT * FROM controles_sanidad WHERE id_control = p_id_control;
-    
-    SELECT * FROM detalles_ventas WHERE id_detalle_venta = p_id_detalle_venta;
-    
-    SELECT * FROM faenas WHERE id_faena = p_id_faena;
-    
-    SELECT * FROM galpones WHERE id_galpon = p_id_galpon;
-    
-    -- 2. CORREGIDO: La columna real es id_compra
-    SELECT * FROM insumos_compras WHERE id_compra = p_id_insumos_compras;
-    
-    SELECT * FROM lotes_aves WHERE id_lote = p_lote;
-    
-    SELECT * FROM medicion_sensores WHERE id_medicion = p_id_medicion;
-    
-    -- 3. CORREGIDO: La columna real es id_producto
-    SELECT * FROM productos_stock WHERE id_producto = p_id_productos;
-    
-    SELECT * FROM proveedores WHERE id_proveedor = p_id_proveedor;
-    
-    SELECT * FROM roles WHERE id_rol = p_id_rol;
-    
-    SELECT * FROM sensores WHERE id_sensor = p_id_sensor;
-    
-    SELECT * FROM usuarios WHERE id_usuario = p_id_usuario;
-    
-    SELECT * FROM ventas WHERE id_venta = p_id_venta;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Buscar_por_id` (IN `p_tabla_destino` VARCHAR(50), IN `p_id` INT)   BEGIN 
+    IF p_tabla_destino = 'camaras_frigorificas' THEN
+        SELECT * FROM camaras_frigorificas WHERE id_camara = p_id;
+        
+    ELSEIF p_tabla_destino = 'clientes' THEN
+        SELECT * FROM clientes WHERE id_cliente = p_id;
+        
+    ELSEIF p_tabla_destino = 'controles_sanidad' THEN
+        SELECT * FROM controles_sanidad WHERE id_control = p_id;
+        
+    ELSEIF p_tabla_destino = 'detalles_ventas' THEN
+        SELECT * FROM detalles_ventas WHERE id_detalle_venta = p_id;
+        
+    ELSEIF p_tabla_destino = 'faenas' THEN
+        SELECT * FROM faenas WHERE id_faena = p_id;
+        
+    ELSEIF p_tabla_destino = 'galpones' THEN
+        SELECT * FROM galpones WHERE id_galpon = p_id;
+        
+    ELSEIF p_tabla_destino = 'insumos_compras' THEN
+        SELECT * FROM insumos_compras WHERE id_compra = p_id;
+        
+    ELSEIF p_tabla_destino = 'lotes_aves' THEN
+        SELECT * FROM lotes_aves WHERE id_lote = p_id;
+        
+    ELSEIF p_tabla_destino = 'medicion_sensores' THEN
+        SELECT * FROM medicion_sensores WHERE id_medicion = p_id;
+        
+    ELSEIF p_tabla_destino = 'productos_stock' THEN
+        SELECT * FROM productos_stock WHERE id_producto = p_id;
+        
+    ELSEIF p_tabla_destino = 'proveedores' THEN
+        SELECT * FROM proveedores WHERE id_proveedor = p_id;
+        
+    ELSEIF p_tabla_destino = 'roles' THEN
+        SELECT * FROM roles WHERE id_rol = p_id;
+        
+    ELSEIF p_tabla_destino = 'sensores' THEN
+        SELECT * FROM sensores WHERE id_sensor = p_id;
+        
+    ELSEIF p_tabla_destino = 'usuarios' THEN
+        SELECT * FROM usuarios WHERE id_usuario = p_id;
+        
+    ELSEIF p_tabla_destino = 'ventas' THEN
+        SELECT * FROM ventas WHERE id_venta = p_id;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar` (IN `p_tabla_destino` VARCHAR(50), IN `p_id` INT)   BEGIN
@@ -359,6 +372,14 @@ CREATE TABLE `camaras_frigorificas` (
   `estado_cadena_frio` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `camaras_frigorificas`
+--
+
+INSERT INTO `camaras_frigorificas` (`id_camara`, `capacidad`, `estado_cadena_frio`) VALUES
+(1, 10000, 'Óptimo - 4°C'),
+(2, 15000, 'Estable - 2°C');
+
 -- --------------------------------------------------------
 
 --
@@ -370,6 +391,14 @@ CREATE TABLE `clientes` (
   `id_usuario` int(11) DEFAULT NULL,
   `telefono` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id_cliente`, `id_usuario`, `telefono`) VALUES
+(1, 2, '555-0177'),
+(2, 3, '555-0188');
 
 -- --------------------------------------------------------
 
@@ -386,6 +415,14 @@ CREATE TABLE `controles_sanidad` (
   `observaciones_veterinarias` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `controles_sanidad`
+--
+
+INSERT INTO `controles_sanidad` (`id_control`, `id_lote`, `id_usuario_veterinario`, `fecha_control`, `cantidad_bajas`, `observaciones_veterinarias`) VALUES
+(1, 1, 3, '2026-10-20 10:00:00', 5, 'Lote en perfectas condiciones sanitarias. Peso óptimo.'),
+(2, 2, 3, '2026-10-22 11:30:00', 12, 'Ligero cuadro respiratorio detectado.');
+
 -- --------------------------------------------------------
 
 --
@@ -399,6 +436,14 @@ CREATE TABLE `detalles_ventas` (
   `cantidad` int(11) DEFAULT NULL,
   `precio_unitario` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalles_ventas`
+--
+
+INSERT INTO `detalles_ventas` (`id_detalle_venta`, `id_venta`, `id_producto`, `cantidad`, `precio_unitario`) VALUES
+(1, 1, 1, 100, 45.00),
+(2, 2, 2, 200, 50.00);
 
 --
 -- Disparadores `detalles_ventas`
@@ -427,6 +472,13 @@ CREATE TABLE `faenas` (
   `peso_total_obtenido` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `faenas`
+--
+
+INSERT INTO `faenas` (`id_faena`, `id_lote`, `fecha_faena`, `cantidad_aves_faenadas`, `peso_total_obtenido`) VALUES
+(1, 1, '2026-10-26 06:00:00', 1200, 2750.50);
+
 -- --------------------------------------------------------
 
 --
@@ -438,6 +490,14 @@ CREATE TABLE `galpones` (
   `nombre_galpon` varchar(100) NOT NULL,
   `capacidad_maxima` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `galpones`
+--
+
+INSERT INTO `galpones` (`id_galpon`, `nombre_galpon`, `capacidad_maxima`) VALUES
+(1, 'Galpón Norte de Engorde', '5000'),
+(2, 'Galpón Sur de Postura', '3500');
 
 -- --------------------------------------------------------
 
@@ -453,6 +513,14 @@ CREATE TABLE `insumos_compras` (
   `fecha_compra` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `insumos_compras`
+--
+
+INSERT INTO `insumos_compras` (`id_compra`, `id_proveedor`, `descripcion_insumo`, `cantidad`, `fecha_compra`) VALUES
+(1, 1, 'Alimento Balanceado Iniciador (Sacos 40kg)', 100, '2026-10-10 14:00:00'),
+(2, 2, 'Vacunas NewCastle (Dosis)', 5000, '2026-10-12 11:15:00');
+
 -- --------------------------------------------------------
 
 --
@@ -467,6 +535,14 @@ CREATE TABLE `lotes_aves` (
   `raza_genetica` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `lotes_aves`
+--
+
+INSERT INTO `lotes_aves` (`id_lote`, `id_galpon`, `fecha_ingreso`, `cantidad_inicial`, `raza_genetica`) VALUES
+(1, 1, '2026-09-01 08:00:00', 2500, 'Cobb 500'),
+(2, 2, '2026-09-15 08:30:00', 1800, 'Ross 308');
+
 -- --------------------------------------------------------
 
 --
@@ -479,6 +555,14 @@ CREATE TABLE `medicion_sensores` (
   `valor_registrado` decimal(10,2) DEFAULT NULL,
   `fecha_medicion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `medicion_sensores`
+--
+
+INSERT INTO `medicion_sensores` (`id_medicion`, `id_sensor`, `valor_registrado`, `fecha_medicion`) VALUES
+(1, 1, 24.50, '2026-10-26 08:00:00'),
+(2, 2, 15.20, '2026-10-26 08:15:00');
 
 -- --------------------------------------------------------
 
@@ -494,6 +578,14 @@ CREATE TABLE `productos_stock` (
   `fecha_envasado` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `productos_stock`
+--
+
+INSERT INTO `productos_stock` (`id_producto`, `id_camara`, `nombre_producto`, `stock_disponible`, `fecha_envasado`) VALUES
+(1, 1, 'Pollo Entero Grado A', 350, '2026-10-25 08:00:00'),
+(2, 1, 'Pechuga deshuesada bandeja x 1kg', 1000, '2026-10-25 09:30:00');
+
 -- --------------------------------------------------------
 
 --
@@ -504,6 +596,14 @@ CREATE TABLE `proveedores` (
   `id_proveedor` int(11) NOT NULL,
   `telefono` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedores`
+--
+
+INSERT INTO `proveedores` (`id_proveedor`, `telefono`) VALUES
+(1, '555-0192'),
+(2, '555-0143');
 
 -- --------------------------------------------------------
 
@@ -536,6 +636,14 @@ CREATE TABLE `sensores` (
   `ubicacion` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `sensores`
+--
+
+INSERT INTO `sensores` (`id_sensor`, `tipo_sensor`, `ubicacion`) VALUES
+(1, 'Temperatura y Humedad', 'Galpón Norte - Zona Centro'),
+(2, 'Calidad de Aire (NH3)', 'Galpón Sur - Zona Extractor');
+
 -- --------------------------------------------------------
 
 --
@@ -554,8 +662,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `email`, `contrasena`, `id_rol`) VALUES
-(4, 'messi@mail', '123', 1),
-(6, 'nuevo_usuario@gmail.com', 'claveSegura123', 1);
+(1, 'carlos@proyecto.com', 'admin2026', 2),
+(2, 'juan@proyecto.com', 'op1234', 1),
+(3, 'ana@proyecto.com', 'calidad987', 2);
 
 -- --------------------------------------------------------
 
@@ -569,6 +678,14 @@ CREATE TABLE `ventas` (
   `fecha_venta` datetime DEFAULT NULL,
   `total_facturado` decimal(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id_venta`, `id_cliente`, `fecha_venta`, `total_facturado`) VALUES
+(1, 1, '2026-10-26 09:00:00', 4500.00),
+(2, 2, '2026-10-26 09:15:00', 12500.50);
 
 --
 -- Índices para tablas volcadas
@@ -685,7 +802,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `camaras_frigorificas`
 --
 ALTER TABLE `camaras_frigorificas`
-  MODIFY `id_camara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_camara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -697,79 +814,79 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `controles_sanidad`
 --
 ALTER TABLE `controles_sanidad`
-  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_ventas`
 --
 ALTER TABLE `detalles_ventas`
-  MODIFY `id_detalle_venta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `faenas`
 --
 ALTER TABLE `faenas`
-  MODIFY `id_faena` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_faena` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `galpones`
 --
 ALTER TABLE `galpones`
-  MODIFY `id_galpon` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_galpon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `insumos_compras`
 --
 ALTER TABLE `insumos_compras`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `lotes_aves`
 --
 ALTER TABLE `lotes_aves`
-  MODIFY `id_lote` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_lote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `medicion_sensores`
 --
 ALTER TABLE `medicion_sensores`
-  MODIFY `id_medicion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_medicion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_stock`
 --
 ALTER TABLE `productos_stock`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `sensores`
 --
 ALTER TABLE `sensores`
-  MODIFY `id_sensor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sensor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
