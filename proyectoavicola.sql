@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-10-2026 a las 16:36:31
+-- Tiempo de generación: 27-10-2026 a las 03:02:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -358,6 +358,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_tabla` (IN `p_tabla` VARCHAR
     END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_login` (IN `p_email` VARCHAR(150), IN `p_contrasena` VARCHAR(255))   BEGIN
+    SELECT id_usuario, email, contrasena, id_rol 
+    FROM usuarios 
+    WHERE email = p_email AND contrasena = p_contrasena;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -556,14 +562,6 @@ CREATE TABLE `medicion_sensores` (
   `fecha_medicion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `medicion_sensores`
---
-
-INSERT INTO `medicion_sensores` (`id_medicion`, `id_sensor`, `valor_registrado`, `fecha_medicion`) VALUES
-(1, 1, 24.50, '2026-10-26 08:00:00'),
-(2, 2, 15.20, '2026-10-26 08:15:00');
-
 -- --------------------------------------------------------
 
 --
@@ -641,8 +639,8 @@ CREATE TABLE `sensores` (
 --
 
 INSERT INTO `sensores` (`id_sensor`, `tipo_sensor`, `ubicacion`) VALUES
-(1, 'Temperatura y Humedad', 'Galpón Norte - Zona Centro'),
-(2, 'Calidad de Aire (NH3)', 'Galpón Sur - Zona Extractor');
+(1, 'Temperatura', 'Sector 1'),
+(2, 'Humedad', 'Sector 2');
 
 -- --------------------------------------------------------
 
@@ -664,7 +662,9 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id_usuario`, `email`, `contrasena`, `id_rol`) VALUES
 (1, 'carlos@proyecto.com', 'admin2026', 2),
 (2, 'juan@proyecto.com', 'op1234', 1),
-(3, 'ana@proyecto.com', 'calidad987', 2);
+(3, 'ana@proyecto.com', 'calidad987', 2),
+(8, 'gianpancho@gmail.com', '1234', 1),
+(9, 'mica@gmail.com', '123345', 1);
 
 -- --------------------------------------------------------
 
@@ -850,7 +850,7 @@ ALTER TABLE `lotes_aves`
 -- AUTO_INCREMENT de la tabla `medicion_sensores`
 --
 ALTER TABLE `medicion_sensores`
-  MODIFY `id_medicion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_medicion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_stock`
@@ -874,13 +874,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `sensores`
 --
 ALTER TABLE `sensores`
-  MODIFY `id_sensor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_sensor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
