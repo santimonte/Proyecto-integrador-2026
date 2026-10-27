@@ -1,0 +1,39 @@
+/* Módulo Producción - reutiliza las variables de dashboard.css */
+.produccion-grid-layout { display:grid; grid-template-columns:minmax(280px, .85fr) minmax(0, 1.8fr); gap:1.5rem; align-items:start; }
+@media (max-width: 1000px) { .produccion-grid-layout { grid-template-columns:1fr; } }
+.form-card .form-label { display:block; margin-bottom:6px; font-size:.9rem; color:var(--text-muted); }
+.form-card .form-control, .search-control {
+    box-sizing:border-box; width:100%; padding:10px 12px; background-color:var(--bg-dark);
+    border:1px solid var(--border-color); border-radius:8px; color:var(--text-white);
+    font-size:.95rem; margin-bottom:1rem; outline:none; transition:border-color .2s;
+}
+.form-card .form-control:focus, .search-control:focus { border-color:var(--primary-yellow); }
+.form-card select.form-control { cursor:pointer; }
+.form-card input[type="date"].form-control { color-scheme:dark; }
+.form-card textarea.form-control { resize:vertical; }
+.form-error { color:var(--danger-red); font-size:.85rem; min-height:1.2rem; margin:0 0 .8rem; }
+.form-actions { display:flex; gap:.65rem; flex-wrap:wrap; }
+.btn-submit, .btn-secondary, .btn-action {
+    border:0; padding:10px 12px; border-radius:8px; font-weight:700; cursor:pointer;
+}
+.btn-submit { background:var(--primary-yellow); color:#000; flex:1; }
+.btn-submit:hover { background:var(--primary-yellow-hover); }
+.btn-secondary { background:#3b414b; color:var(--text-white); }
+.btn-secondary:hover { filter:brightness(1.15); }
+.table-heading { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+.table-heading h3 { margin-right:auto; }
+.search-control { max-width:300px; margin-bottom:.5rem; }
+.table-responsive { overflow-x:auto; }
+.data-table { width:100%; border-collapse:collapse; text-align:left; margin-top:5px; }
+.data-table th, .data-table td { padding:11px 12px; border-bottom:1px solid var(--border-color); vertical-align:top; }
+.data-table th { color:var(--primary-yellow); font-size:.8rem; text-transform:uppercase; letter-spacing:.4px; white-space:nowrap; }
+.data-table td { color:var(--text-white); font-size:.9rem; }
+.data-table tbody tr:hover { background:rgba(255,255,255,.025); }
+.data-table .fila-vacia { text-align:center; color:var(--text-muted); padding:24px; }
+.acciones { display:flex; gap:.4rem; }
+.btn-action { padding:7px 9px; font-size:.8rem; white-space:nowrap; }
+.btn-editar { background:#d8a928; color:#171717; }
+.btn-eliminar { background:#a93636; color:white; }
+.status-message { min-height:1.2rem; color:var(--text-muted); font-size:.9rem; margin-top:.8rem; }
+.status-message.error { color:var(--danger-red); }
+@media (max-width:600px) { .cards-grid { grid-template-columns:1fr; } .table-heading { align-items:stretch; } .search-control { max-width:none; } }
