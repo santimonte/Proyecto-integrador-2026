@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-11-2026 a las 23:00:15
+-- Tiempo de generación: 11-11-2026 a las 23:15:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -367,7 +367,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_tabla` (IN `p_tabla` VARCHAR
 END$$
 
 DROP PROCEDURE IF EXISTS `procesar_faena_lote`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `procesar_faena_lote` (IN `p_id_lote` INT, IN `p_cantidad_faenada` INT, IN `p_peso_total` DECIMAL(10,2))   proc_label: BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `procesar_faena_lote` (IN `p_id_lote` INT, IN `p_cantidad_faenada` INT, IN `p_peso_total` DECIMAL(10,2))   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
