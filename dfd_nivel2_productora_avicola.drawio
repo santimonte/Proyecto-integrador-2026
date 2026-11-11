@@ -1,0 +1,469 @@
+<mxfile host="Electron" pages="10">
+  <diagram name="N2 - 1.0 Gestionar lotes y aves" id="n2-0">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 1.0 Gestionar lotes y aves" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="CRIANZA" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="SECTOR DE CRIANZA" vertex="1">
+          <mxGeometry height="70" width="160" x="215" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="GESTOR" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="GESTOR DE INVENTARIO" vertex="1">
+          <mxGeometry height="70" width="160" x="875" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p11" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="1.1&lt;br&gt;Registrar lote y&lt;br&gt;aves marcadas" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p12" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="1.2&lt;br&gt;Generar monitoreo&lt;br&gt;del registro" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p13" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="1.3&lt;br&gt;Registrar&lt;br&gt;animales" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p14" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="1.4&lt;br&gt;Categorizar estado&lt;br&gt;de aves" vertex="1">
+          <mxGeometry height="100" width="180" x="1030" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D1" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D1 | Aves y lotes" vertex="1">
+          <mxGeometry height="45" width="170" x="540" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="CRIANZA" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p11" value="Subir aves marcadas /&lt;br&gt;subir datos del lote">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p12" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="CRIANZA" value="Devolver estado / generar&lt;br&gt;monitoreo del registro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="GESTOR" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p13" value="Registrar animales">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p14" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="GESTOR" value="Devolver estado&lt;br&gt;categorizado">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="p11" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryY=0;entryDx=0;entryDy=0;" target="D1" value="guardar lote y aves">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="D1" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.4;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p12" value="estado del registro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" edge="1" parent="1" source="p13" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.6;entryY=0;entryDx=0;entryDy=0;" target="D1" value="guardar animales">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f7" edge="1" parent="1" source="D1" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.8;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p14" value="aves registradas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 2.0 Gestionar sanidad" id="n2-1">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 2.0 Gestionar sanidad" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SANIT" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="SECTOR SANITARIO" vertex="1">
+          <mxGeometry height="70" width="160" x="380" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p21" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="2.1&lt;br&gt;Registrar control&lt;br&gt;de salud" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p22" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="2.2&lt;br&gt;Actualizar total&lt;br&gt;de unidades" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p23" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="2.3&lt;br&gt;Informar nuevo total&lt;br&gt;de unidades" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D2" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D2 | Controles sanitarios" vertex="1">
+          <mxGeometry height="45" width="170" x="45" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="D1" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D1 | Aves y lotes" vertex="1">
+          <mxGeometry height="45" width="170" x="375" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="SANIT" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p21" value="Registrar controles&lt;br&gt;de salud">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p21" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="D2" value="guardar control">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p21" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p22" value="bajas y novedades">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p22" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=block;" target="D1" value="consultar / actualizar&lt;br&gt;total de unidades*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="p22" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p23" value="nuevo total&lt;br&gt;de unidades">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="p23" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="SANIT" value="Devolver nuevo total&lt;br&gt;de unidades">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 3.0 Monitorear gases en galpones" id="n2-2">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 3.0 Monitorear gases en galpones" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="GALP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="GALPONES" vertex="1">
+          <mxGeometry height="70" width="160" x="50" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p31" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="3.1&lt;br&gt;Recibir alarma&lt;br&gt;de sensores" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p32" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="3.2&lt;br&gt;Clasificar nivel&lt;br&gt;de gases" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p33" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="3.3&lt;br&gt;Registrar&lt;br&gt;alarma" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D3" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D3 | Alarmas ambientales" vertex="1">
+          <mxGeometry height="45" width="170" x="540" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="GALP" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p31" value="Alarma de detección&lt;br&gt;de gases tóxicos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p31" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p32" value="lectura recibida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p32" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p33" value="alarma clasificada">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p33" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=0;entryDx=0;entryDy=0;" target="D3" value="registrar alarma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="D3" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p32" value="historial de alarmas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 4.0 Gestionar alimentación y compras" id="n2-3">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 4.0 Gestionar alimentación y compras" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ALIM" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR ALIMENTICIO" vertex="1">
+          <mxGeometry height="70" width="160" x="215" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p41" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="4.1&lt;br&gt;Generar solicitud de&lt;br&gt;orden de compra" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p42" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="4.2&lt;br&gt;Recibir orden&lt;br&gt;de compra" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p43" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="4.3&lt;br&gt;Registrar orden&lt;br&gt;de compra" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D4" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D4 | Órdenes de compra" vertex="1">
+          <mxGeometry height="45" width="170" x="375" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="p41" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.3333333333333333;entryY=1;entryDx=0;entryDy=0;" target="ALIM" value="Solicitar orden&lt;br&gt;de compra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="ALIM" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.6666666666666666;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p42" value="Emitir orden&lt;br&gt;de compra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p42" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p43" value="orden de compra&lt;br&gt;recibida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p43" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=0;entryDx=0;entryDy=0;" target="D4" value="guardar orden">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="D4" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p41" value="órdenes previas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 5.0 Registrar faena y calcular merma" id="n2-4">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 5.0 Registrar faena y calcular merma" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="OPER" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" value="OPERARIO DE PLANTA" vertex="1">
+          <mxGeometry height="70" width="160" x="545" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p51" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="5.1&lt;br&gt;Registrar resultados&lt;br&gt;de la faena" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p52" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="5.2&lt;br&gt;Calcular&lt;br&gt;merma" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p53" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="5.3&lt;br&gt;Guardar resultado&lt;br&gt;y merma" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p54" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="5.4&lt;br&gt;Informar resultado&lt;br&gt;y merma" vertex="1">
+          <mxGeometry height="100" width="180" x="1030" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D1" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D1 | Aves y lotes" vertex="1">
+          <mxGeometry height="45" width="170" x="210" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="D5" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D5 | Faenas y mermas" vertex="1">
+          <mxGeometry height="45" width="170" x="870" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="OPER" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p51" value="Registrar resultados&lt;br&gt;de la faena">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="D1" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p51" value="aves a faenar*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p51" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p52" value="resultados&lt;br&gt;de faena">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="D1" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.6666666666666666;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p52" value="cantidad inicial&lt;br&gt;de aves*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="p52" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p53" value="merma calculada">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="p53" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3333333333333333;entryY=0;entryDx=0;entryDy=0;" target="D5" value="guardar resultado">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" edge="1" parent="1" source="D5" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.6666666666666666;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p54" value="resultado y merma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f7" edge="1" parent="1" source="p54" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="OPER" value="Guardar resultado y realizar&lt;br&gt;cálculo de merma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 6.0 Gestionar producto y empaque" id="n2-5">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 6.0 Gestionar producto y empaque" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="EMP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR DE EMPAQUE" vertex="1">
+          <mxGeometry height="70" width="160" x="710" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p61" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="6.1&lt;br&gt;Consultar resultado&lt;br&gt;de faena" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p62" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="6.2&lt;br&gt;Registrar&lt;br&gt;producto" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p63" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="6.3&lt;br&gt;Informar producto&lt;br&gt;a empaque" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D5" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D5 | Faenas y mermas" vertex="1">
+          <mxGeometry height="45" width="170" x="45" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="D6" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D6 | Productos" vertex="1">
+          <mxGeometry height="45" width="170" x="540" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="D5" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p61" value="resultado de faena*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p61" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p62" value="datos del lote&lt;br&gt;faenado">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p62" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3333333333333333;entryY=0;entryDx=0;entryDy=0;" target="D6" value="guardar producto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="D6" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.6666666666666666;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p63" value="datos del producto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="p63" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="EMP" value="Información de&lt;br&gt;producto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 7.0 Gestionar pedidos" id="n2-6">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 7.0 Gestionar pedidos" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="LOG" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="SECTOR LOGISTICA" vertex="1">
+          <mxGeometry height="70" width="160" x="545" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p71" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="7.1&lt;br&gt;Recibir datos&lt;br&gt;del pedido" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p72" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="7.2&lt;br&gt;Asignar producto y&lt;br&gt;fecha de entrega" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p73" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="7.3&lt;br&gt;Registrar&lt;br&gt;pedido" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p74" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="7.4&lt;br&gt;Emitir&lt;br&gt;pedido" vertex="1">
+          <mxGeometry height="100" width="180" x="1030" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D7" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D7 | Pedidos" vertex="1">
+          <mxGeometry height="45" width="170" x="870" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="LOG" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p71" value="Subir datos&lt;br&gt;del pedido">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p71" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p72" value="pedido recibido">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p72" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p73" value="pedido con producto&lt;br&gt;y fecha de entrega">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p73" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3333333333333333;entryY=0;entryDx=0;entryDy=0;" target="D7" value="guardar pedido">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="D7" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.6666666666666666;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p74" value="pedido registrado">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="p74" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="LOG" value="Devolver pedido con producto&lt;br&gt;y fecha de entrega">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 8.0 Gestionar transporte" id="n2-7">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 8.0 Gestionar transporte" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="FRIGO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="FRIGORIFICO" vertex="1">
+          <mxGeometry height="70" width="160" x="215" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p81" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="8.1&lt;br&gt;Registrar&lt;br&gt;vehículo" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p82" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="8.2&lt;br&gt;Informar&lt;br&gt;ubicación" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p83" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="8.3&lt;br&gt;Asignar vehículo&lt;br&gt;a pedido" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D7" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D7 | Pedidos" vertex="1">
+          <mxGeometry height="45" width="170" x="1101" y="417.5" as="geometry" />
+        </mxCell>
+        <mxCell id="D8" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D8 | Vehículos" vertex="1">
+          <mxGeometry height="45" width="170" x="375" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="FRIGO" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p81" value="Cargar datos&lt;br&gt;del vehículo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p81" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="D8" value="guardar vehículo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="D8" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p82" value="ubicación del vehículo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p82" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="FRIGO" value="Devolver ubicación">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="D7" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="p83" value="pedidos a despachar*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="D8" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=block;" target="p83" value="vehículos disponibles /&lt;br&gt;asignación">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 9.0 Gestionar personal" id="n2-8">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 9.0 Gestionar personal" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ADMIN2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR ADMINISTRATIVO #" vertex="1">
+          <mxGeometry height="70" width="160" x="380" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p91" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="9.1&lt;br&gt;Registrar datos&lt;br&gt;de empleados" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p92" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="9.2&lt;br&gt;Calcular&lt;br&gt;antigüedad" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p93" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="9.3&lt;br&gt;Asignar&lt;br&gt;roles" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D9" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D9 | Empleados" vertex="1">
+          <mxGeometry height="45" width="170" x="375" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="ADMIN2" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.3333333333333333;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p91" value="Subir datos&lt;br&gt;de empleados">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p91" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="D9" value="guardar empleado">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="D9" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p92" value="fecha de ingreso">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="p92" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p93" value="antigüedad">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="p93" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="D9" value="guardar rol">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="p93" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6666666666666666;entryY=1;entryDx=0;entryDy=0;" target="ADMIN2" value="Devolver antigüedad y&lt;br&gt;asignación de roles">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="N2 - 10.0 Facturación electrónica" id="n2-9">
+    <mxGraphModel dx="1568" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="830" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;" value="DFD NIVEL 2 - PROCESO 10.0 Facturación electrónica" vertex="1">
+          <mxGeometry height="30" width="900" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ADMIN" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" value="SECTOR ADMINISTRATIVO" vertex="1">
+          <mxGeometry height="70" width="160" x="710" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="p101" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="10.1&lt;br&gt;Consultar datos&lt;br&gt;del pedido" vertex="1">
+          <mxGeometry height="100" width="180" x="40" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p102" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="10.2&lt;br&gt;Generar comprobante&lt;br&gt;digital" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p103" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1f6fb2;fontSize=11;" value="10.3&lt;br&gt;Solicitar factura&lt;br&gt;electrónica" vertex="1">
+          <mxGeometry height="100" width="180" x="700" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="D7" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D7 | Pedidos" vertex="1">
+          <mxGeometry height="45" width="170" x="45" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="D10" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#fffde7;strokeColor=#666666;fontSize=10;" value="D10 | Comprobantes" vertex="1">
+          <mxGeometry height="45" width="170" x="540" y="687.5" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="D7" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p101" value="datos del pedido*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="p101" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="p102" value="datos a facturar">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="p102" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3333333333333333;entryY=0;entryDx=0;entryDy=0;" target="D10" value="guardar comprobante">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="D10" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.6666666666666666;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="p103" value="comprobante digital">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="p103" style="endArrow=block;html=1;rounded=0;fontSize=9;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="ADMIN" value="Solicitar factura electrónica /&lt;br&gt;generar comprobante digital">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
