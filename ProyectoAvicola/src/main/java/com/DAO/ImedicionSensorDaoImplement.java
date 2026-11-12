@@ -14,20 +14,18 @@ public class ImedicionSensorDaoImplement implements ImedicionSensorDao {
         List<MedicionSensor> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "mediciones_sensores");
+            cs.setString(1, "medicion_sensores"); 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
                     MedicionSensor m = new MedicionSensor();
                     m.setIdMedicion(rs.getInt("id_medicion"));
                     m.setIdSensor(rs.getInt("id_sensor"));
+                    m.setValorRegistrado(rs.getDouble("valor_registrado"));
                     
-                    // Corregido con tus setters reales
-                    m.setValorRegistrado(rs.getDouble("valor_lectura"));
-                    
-                    Timestamp ts = rs.getTimestamp("fecha_lectura");
+                    Timestamp ts = rs.getTimestamp("fecha_medicion");
                     if (ts != null) {
                         m.setFechaMedicion(ts.toLocalDateTime());
                     }
@@ -42,22 +40,19 @@ public class ImedicionSensorDaoImplement implements ImedicionSensorDao {
 
     @Override
     public boolean add(MedicionSensor medicionSensor) {
-        // p_id_sensor_medicion = 30, p_id_lote_medicion = 31 (le mandamos NULL ya que no está en tu modelo), p_valor_lectura = 32, p_fecha_lectura = 33
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "mediciones_sensores");
-            cs.setInt(30, medicionSensor.getIdSensor());
-            
-            // Corregido con tus getters reales
-            cs.setDouble(32, medicionSensor.getValorRegistrado());
+            cs.setString(1, "medicion_sensores");              
+            cs.setInt(2, medicionSensor.getIdSensor());        
+            cs.setDouble(3, medicionSensor.getValorRegistrado()); 
             
             if (medicionSensor.getFechaMedicion() != null) {
-                cs.setTimestamp(33, Timestamp.valueOf(medicionSensor.getFechaMedicion()));
+                cs.setTimestamp(4, Timestamp.valueOf(medicionSensor.getFechaMedicion())); 
             } else {
-                cs.setNull(33, java.sql.Types.TIMESTAMP);
+                cs.setNull(4, java.sql.Types.TIMESTAMP);
             }
             
             cs.execute();
@@ -70,23 +65,20 @@ public class ImedicionSensorDaoImplement implements ImedicionSensorDao {
 
     @Override
     public boolean update(MedicionSensor medicionSensor) {
-        // p_id = 2, p_id_sensor_medicion = 30, p_id_lote_medicion = 31 (NULL), p_valor_lectura = 32, p_fecha_lectura = 33
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "mediciones_sensores");
-            cs.setInt(2, medicionSensor.getIdMedicion());
-            cs.setInt(30, medicionSensor.getIdSensor());
-            
-            // Corregido con tus getters reales
-            cs.setDouble(32, medicionSensor.getValorRegistrado());
+            cs.setString(1, "medicion_sensores");              
+            cs.setInt(2, medicionSensor.getIdMedicion());      
+            cs.setInt(3, medicionSensor.getIdSensor());        
+            cs.setDouble(4, medicionSensor.getValorRegistrado()); 
             
             if (medicionSensor.getFechaMedicion() != null) {
-                cs.setTimestamp(33, Timestamp.valueOf(medicionSensor.getFechaMedicion()));
+                cs.setTimestamp(5, Timestamp.valueOf(medicionSensor.getFechaMedicion())); 
             } else {
-                cs.setNull(33, java.sql.Types.TIMESTAMP);
+                cs.setNull(5, java.sql.Types.TIMESTAMP);
             }
             
             cs.execute();
@@ -101,10 +93,10 @@ public class ImedicionSensorDaoImplement implements ImedicionSensorDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "mediciones_sensores");
+            cs.setString(1, "medicion_sensores");
             cs.setInt(2, id);
             
             cs.execute();
@@ -118,22 +110,22 @@ public class ImedicionSensorDaoImplement implements ImedicionSensorDao {
     @Override
     public MedicionSensor findById(int id) {
         MedicionSensor m = null;
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(9, id);
+            cs.setString(1, "medicion_sensores");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     m = new MedicionSensor();
                     m.setIdMedicion(rs.getInt("id_medicion"));
                     m.setIdSensor(rs.getInt("id_sensor"));
+                    m.setValorRegistrado(rs.getDouble("valor_registrado"));
                     
-                    // Corregido con tus setters reales
-                    m.setValorRegistrado(rs.getDouble("valor_lectura"));
-                    
-                    Timestamp ts = rs.getTimestamp("fecha_lectura");
+                    Timestamp ts = rs.getTimestamp("fecha_medicion");
                     if (ts != null) {
                         m.setFechaMedicion(ts.toLocalDateTime());
                     }
@@ -145,4 +137,5 @@ public class ImedicionSensorDaoImplement implements ImedicionSensorDao {
         return m;
     }
 }
+
 

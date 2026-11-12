@@ -13,7 +13,7 @@ public class IproveedorDaoImplement implements IproveedorDao {
         List<Proveedor> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "proveedores");
@@ -33,14 +33,13 @@ public class IproveedorDaoImplement implements IproveedorDao {
 
     @Override
     public boolean add(Proveedor proveedor) {
-        // En insertar: p_telefono_proveedor = 38
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "proveedores");
-            cs.setString(38, proveedor.getTelefono());
+            cs.setString(1, "proveedores");         
+            cs.setString(2, proveedor.getTelefono()); 
             
             cs.execute();
             return true;
@@ -52,15 +51,14 @@ public class IproveedorDaoImplement implements IproveedorDao {
 
     @Override
     public boolean update(Proveedor proveedor) {
-        // En actualizar: p_id = 2, p_telefono_proveedor = 38
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "proveedores");
-            cs.setInt(2, proveedor.getIdProveedor());
-            cs.setString(38, proveedor.getTelefono());
+            cs.setString(1, "proveedores");           
+            cs.setInt(2, proveedor.getIdProveedor()); 
+            cs.setString(3, proveedor.getTelefono());  
             
             cs.execute();
             return true;
@@ -74,7 +72,7 @@ public class IproveedorDaoImplement implements IproveedorDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "proveedores");
@@ -91,13 +89,14 @@ public class IproveedorDaoImplement implements IproveedorDao {
     @Override
     public Proveedor findById(int id) {
         Proveedor p = null;
-        // En Buscar_por_id: p_id_proveedor es el undécimo parámetro (posición 11)
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(11, id);
+            cs.setString(1, "proveedores");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     p = new Proveedor();

@@ -14,7 +14,7 @@ public class IcontrolSanidadDaoImplement implements IcontrolSanidadDao {
         List<ControlSanidad> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "controles_sanidad");
@@ -45,21 +45,21 @@ public class IcontrolSanidadDaoImplement implements IcontrolSanidadDao {
     public boolean add(ControlSanidad controlSanidad) {
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "controles_sanidad");
-            cs.setInt(7, controlSanidad.getIdLote());
-            cs.setInt(8, controlSanidad.getIdUsuarioVeterinario());
+            cs.setString(1, "controles_sanidad");             
+            cs.setInt(2, controlSanidad.getIdLote());          
+            cs.setInt(3, controlSanidad.getIdUsuarioVeterinario()); 
             
             if (controlSanidad.getFechaControl() != null) {
-                cs.setTimestamp(9, Timestamp.valueOf(controlSanidad.getFechaControl()));
+                cs.setTimestamp(4, Timestamp.valueOf(controlSanidad.getFechaControl())); 
             } else {
-                cs.setNull(9, java.sql.Types.TIMESTAMP);
+                cs.setNull(4, java.sql.Types.TIMESTAMP);
             }
             
-            cs.setInt(10, controlSanidad.getCantidadBajas());
-            cs.setString(11, controlSanidad.getObservacionesVeterinarias());
+            cs.setInt(5, controlSanidad.getCantidadBajas()); 
+            cs.setString(6, controlSanidad.getObservacionesVeterinarias()); 
             
             cs.execute();
             return true;
@@ -71,24 +71,25 @@ public class IcontrolSanidadDaoImplement implements IcontrolSanidadDao {
 
     @Override
     public boolean update(ControlSanidad controlSanidad) {
+        
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, ?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "controles_sanidad");
-            cs.setInt(2, controlSanidad.getIdControl());
-            cs.setInt(7, controlSanidad.getIdLote());
-            cs.setInt(8, controlSanidad.getIdUsuarioVeterinario());
+            cs.setString(1, "controles_sanidad");             
+            cs.setInt(2, controlSanidad.getIdControl());       
+            cs.setInt(3, controlSanidad.getIdLote());          
+            cs.setInt(4, controlSanidad.getIdUsuarioVeterinario()); 
             
             if (controlSanidad.getFechaControl() != null) {
-                cs.setTimestamp(9, Timestamp.valueOf(controlSanidad.getFechaControl()));
+                cs.setTimestamp(5, Timestamp.valueOf(controlSanidad.getFechaControl())); 
             } else {
-                cs.setNull(9, java.sql.Types.TIMESTAMP);
+                cs.setNull(5, java.sql.Types.TIMESTAMP);
             }
             
-            cs.setInt(10, controlSanidad.getCantidadBajas());
-            cs.setString(11, controlSanidad.getObservacionesVeterinarias());
+            cs.setInt(6, controlSanidad.getCantidadBajas()); 
+            cs.setString(7, controlSanidad.getObservacionesVeterinarias()); 
             
             cs.execute();
             return true;
@@ -102,7 +103,7 @@ public class IcontrolSanidadDaoImplement implements IcontrolSanidadDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "controles_sanidad");
@@ -119,12 +120,14 @@ public class IcontrolSanidadDaoImplement implements IcontrolSanidadDao {
     @Override
     public ControlSanidad findById(int id) {
         ControlSanidad c = null;
-        String sql = "{CALL Buscar_por_id(NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(3, id);
+            cs.setString(1, "controles_sanidad");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     c = new ControlSanidad();
@@ -146,4 +149,6 @@ public class IcontrolSanidadDaoImplement implements IcontrolSanidadDao {
         }
         return c;
     }
+
+
 }

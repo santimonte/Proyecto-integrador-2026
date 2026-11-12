@@ -13,7 +13,7 @@ public class IsensorDaoImplement implements IsensorDao {
         List<Sensor> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "sensores");
@@ -34,15 +34,14 @@ public class IsensorDaoImplement implements IsensorDao {
 
     @Override
     public boolean add(Sensor sensor) {
-        // En insertar: p_tipo_sensor = 40, p_ubicacion_sensor = 41
-        String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "sensores");
-            cs.setString(40, sensor.getTipoSensor());
-            cs.setString(41, sensor.getUbicacion());
+            cs.setString(1, "sensores"); 
+            cs.setString(2, sensor.getTipoSensor()); 
+            cs.setString(3, sensor.getUbicacion());  
             
             cs.execute();
             return true;
@@ -54,16 +53,15 @@ public class IsensorDaoImplement implements IsensorDao {
 
     @Override
     public boolean update(Sensor sensor) {
-        // En actualizar: p_id = 2, p_tipo_sensor = 40, p_ubicacion_sensor = 41
-        String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "sensores");
-            cs.setInt(2, sensor.getIdSensor());
-            cs.setString(40, sensor.getTipoSensor());
-            cs.setString(41, sensor.getUbicacion());
+            cs.setString(1, "sensores");            
+            cs.setInt(2, sensor.getIdSensor());     
+            cs.setString(3, sensor.getTipoSensor()); 
+            cs.setString(4, sensor.getUbicacion());  
             
             cs.execute();
             return true;
@@ -77,7 +75,7 @@ public class IsensorDaoImplement implements IsensorDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "sensores");
@@ -94,13 +92,14 @@ public class IsensorDaoImplement implements IsensorDao {
     @Override
     public Sensor findById(int id) {
         Sensor s = null;
-        // En Buscar_por_id: p_id_sensor es el decimotercer parámetro (posición 13)
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(13, id);
+            cs.setString(1, "sensores");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     s = new Sensor();
@@ -115,3 +114,4 @@ public class IsensorDaoImplement implements IsensorDao {
         return s;
     }
 }
+

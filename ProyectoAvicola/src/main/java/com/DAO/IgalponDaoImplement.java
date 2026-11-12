@@ -11,12 +11,12 @@ public class IgalponDaoImplement implements IgalponDao {
     @Override
     public List<Galpon> listAll() {
         List<Galpon> lista = new ArrayList<>();
-        String sql = "{CALL listar_tabla(?)}";
+        String sql = "{CALL listar_tabla(?)}"; 
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "galpones");
+            cs.setString(1, "galpones"); 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
                     Galpon g = new Galpon();
@@ -34,14 +34,15 @@ public class IgalponDaoImplement implements IgalponDao {
 
     @Override
     public boolean add(Galpon galpon) {
+        
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "galpones");
-            cs.setString(20, galpon.getNombreGalpon());
-            cs.setString(21, galpon.getCapacidadMaxima());
+            cs.setString(1, "galpones");         
+            cs.setString(2, galpon.getNombreGalpon());   
+            cs.setString(3, galpon.getCapacidadMaxima()); 
             
             cs.execute();
             return true;
@@ -53,15 +54,16 @@ public class IgalponDaoImplement implements IgalponDao {
 
     @Override
     public boolean update(Galpon galpon) {
+ 
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "galpones");
-            cs.setInt(2, galpon.getIdGalpon());
-            cs.setString(20, galpon.getNombreGalpon());
-            cs.setString(21, galpon.getCapacidadMaxima());
+            cs.setString(1, "galpones");         
+            cs.setInt(2, galpon.getIdGalpon());          
+            cs.setString(3, galpon.getNombreGalpon());   
+            cs.setString(4, galpon.getCapacidadMaxima()); 
             
             cs.execute();
             return true;
@@ -75,11 +77,11 @@ public class IgalponDaoImplement implements IgalponDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "galpones");
-            cs.setInt(2, id);
+            cs.setString(1, "galpones"); 
+            cs.setInt(2, id);           
             
             cs.execute();
             return true;
@@ -92,23 +94,20 @@ public class IgalponDaoImplement implements IgalponDao {
     @Override
     public Galpon findById(int id) {
         Galpon g = null;
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
-        
-        try (Connection con = Conexion.getConexion();
+        String sql = "{CALL Buscar_por_id(?, ?)}";
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
-            
-            cs.setInt(6, id);
+            cs.setString(1, "galpones");
+            cs.setInt(2, id);
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
-                    g = new Galpon(); // Corregido el typo acá
+                    g = new Galpon();
                     g.setIdGalpon(rs.getInt("id_galpon"));
                     g.setNombreGalpon(rs.getString("nombre_galpon"));
                     g.setCapacidadMaxima(rs.getString("capacidad_maxima"));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return g;
     }
 }

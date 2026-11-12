@@ -13,7 +13,7 @@ public class IusuarioDaoImplement implements IusuarioDao {
         List<Usuario> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "usuarios");
@@ -35,23 +35,24 @@ public class IusuarioDaoImplement implements IusuarioDao {
 
     @Override
     public boolean add(Usuario usuario) {
-        // Consulta SQL directa a la tabla usuarios
-        String sql = "INSERT INTO usuarios (id_rol, email, contrasena) VALUES (?, ?, ?)";
 
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, NULL, NULL, NULL)}";
 
-            // Si el objeto usuario no trae un idRol asignado, usamos el rol 1 (Cliente)
+        try (Connection con = Conexion.getInstancia().getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+
             int idRol = (usuario.getIdRol() > 0) ? usuario.getIdRol() : 1;
 
-            ps.setInt(1, idRol); // Envía 1 a la columna id_rol
-            ps.setString(2, usuario.getEmail());
-            ps.setString(3, usuario.getContrasena());
+            cs.setString(1, "usuarios");              
+            cs.setString(2, usuario.getEmail());      
+            cs.setString(3, usuario.getContrasena()); 
+            cs.setInt(4, idRol);                      
 
-            ps.executeUpdate(); // Ejecutamos la inserción
+            cs.execute();
             return true;
 
         } catch (SQLException e) {
+            System.out.println("=== ERROR REAL EN INSERTAR USUARIO ===");
             e.printStackTrace();
             return false;
         }
@@ -59,19 +60,17 @@ public class IusuarioDaoImplement implements IusuarioDao {
 
     @Override
     public boolean update(Usuario usuario) {
-        // CORREGIDO: Tiene exactamente los 46 casilleros de tu base de datos.
-        // ? (1) | ? (2) | 38 NULLs | ? (3) | ? (4) | ? (5) | 3 NULLs finales.
+
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            // Los índices numéricos representan ESTRICTAMENTE el orden de los signos "?" de izquierda a derecha
-            cs.setString(1, "usuarios");              // 1er "?" -> p_tabla_destino
-            cs.setInt(2, usuario.getIdUsuario());     // 2do "?" -> p_id
-            cs.setString(3, usuario.getEmail());       // 3er "?" -> p_email
-            cs.setString(4, usuario.getContrasena());  // 4to "?" -> p_contrasena
-            cs.setInt(5, usuario.getIdRol());         // 5to "?" -> p_id_rol
+            cs.setString(1, "usuarios");              
+            cs.setInt(2, usuario.getIdUsuario());     
+            cs.setString(3, usuario.getEmail());       
+            cs.setString(4, usuario.getContrasena()); 
+            cs.setInt(5, usuario.getIdRol());         
             
             cs.execute();
             return true;
@@ -87,7 +86,7 @@ public class IusuarioDaoImplement implements IusuarioDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "usuarios");
@@ -102,17 +101,17 @@ public class IusuarioDaoImplement implements IusuarioDao {
     }
 
     @Override
-    public Usuario findById(int id) { 
+    public Usuario findById(int id) {
         Usuario u = null;
-        // Consulta directa a la tabla usuarios para evitar leer los 15 resultsets del procedure
-        String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = Conexion.getInstancia().getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
             
-            ps.setInt(1, id); 
+            cs.setString(1, "usuarios");
+            cs.setInt(2, id);
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     u = new Usuario();
                     u.setIdUsuario(rs.getInt("id_usuario"));
@@ -122,11 +121,38 @@ public class IusuarioDaoImplement implements IusuarioDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("=== ERROR SQL EN FINDBYID ===");
             e.printStackTrace();
         }
         return u;
     }
+    
+    @Override
+    public Usuario validarLogin(String email, String contrasena) {
+        String sql = "{CALL validar_login(?, ?)}";
+        
+        try (Connection con = Conexion.getInstancia().getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+            
+            cs.setString(1, email);
+            cs.setString(2, contrasena);
+            
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    Usuario u = new Usuario();
+                    u.setIdUsuario(rs.getInt("id_usuario"));
+                    u.setEmail(rs.getString("email"));
+                    u.setContrasena(rs.getString("contrasena"));
+                    u.setIdRol(rs.getInt("id_rol"));
+                    return u;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al validar el login", e);
+        }
+        
+        return null; 
+    }
+
       
 }
 

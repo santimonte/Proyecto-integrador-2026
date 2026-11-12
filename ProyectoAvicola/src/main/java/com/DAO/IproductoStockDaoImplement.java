@@ -14,7 +14,7 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
         List<ProductoStock> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "productos_stock");
@@ -26,7 +26,6 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
                     p.setNombreProducto(rs.getString("nombre_producto"));
                     p.setStockDisponible(rs.getInt("stock_disponible"));
                     
-                    // Mapeo limpio de Timestamp a LocalDateTime
                     Timestamp ts = rs.getTimestamp("fecha_envasado");
                     if (ts != null) {
                         p.setFechaEnvasado(ts.toLocalDateTime());
@@ -42,21 +41,20 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
 
     @Override
     public boolean add(ProductoStock productoStock) {
-        // En insertar: p_id_camara_producto = 34, p_nombre_producto = 35, p_stock_disponible = 36, p_fecha_envasado = 37
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "productos_stock");
-            cs.setInt(34, productoStock.getIdCamara());
-            cs.setString(35, productoStock.getNombreProducto());
-            cs.setInt(36, productoStock.getStockDisponible());
+            cs.setString(1, "productos_stock");                 
+            cs.setInt(2, productoStock.getIdCamara());           
+            cs.setString(3, productoStock.getNombreProducto());  
+            cs.setInt(4, productoStock.getStockDisponible());    
             
             if (productoStock.getFechaEnvasado() != null) {
-                cs.setTimestamp(37, Timestamp.valueOf(productoStock.getFechaEnvasado()));
+                cs.setTimestamp(5, Timestamp.valueOf(productoStock.getFechaEnvasado())); 
             } else {
-                cs.setNull(37, java.sql.Types.TIMESTAMP);
+                cs.setNull(5, java.sql.Types.TIMESTAMP);
             }
             
             cs.execute();
@@ -69,22 +67,21 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
 
     @Override
     public boolean update(ProductoStock productoStock) {
-        // En actualizar: p_id = 2, p_id_camara_producto = 34, p_nombre_producto = 35, p_stock_disponible = 36, p_fecha_envasado = 37
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "productos_stock");
-            cs.setInt(2, productoStock.getIdProducto());
-            cs.setInt(34, productoStock.getIdCamara());
-            cs.setString(35, productoStock.getNombreProducto());
-            cs.setInt(36, productoStock.getStockDisponible());
+            cs.setString(1, "productos_stock");                 
+            cs.setInt(2, productoStock.getIdProducto());         
+            cs.setInt(3, productoStock.getIdCamara());           
+            cs.setString(4, productoStock.getNombreProducto());  
+            cs.setInt(5, productoStock.getStockDisponible());    
             
             if (productoStock.getFechaEnvasado() != null) {
-                cs.setTimestamp(37, Timestamp.valueOf(productoStock.getFechaEnvasado()));
+                cs.setTimestamp(6, Timestamp.valueOf(productoStock.getFechaEnvasado())); 
             } else {
-                cs.setNull(37, java.sql.Types.TIMESTAMP);
+                cs.setNull(6, java.sql.Types.TIMESTAMP);
             }
             
             cs.execute();
@@ -99,7 +96,7 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "productos_stock");
@@ -116,13 +113,14 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
     @Override
     public ProductoStock findById(int id) {
         ProductoStock p = null;
-        // En Buscar_por_id: p_id_producto_stock es el décimo parámetro
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(10, id);
+            cs.setString(1, "productos_stock");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     p = new ProductoStock();
@@ -143,4 +141,3 @@ public class IproductoStockDaoImplement implements IproductoStockDao {
         return p;
     }
 }
-

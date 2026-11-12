@@ -13,7 +13,7 @@ public class IrolDaoImplement implements IrolDao {
         List<Rol> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "roles");
@@ -33,14 +33,13 @@ public class IrolDaoImplement implements IrolDao {
 
     @Override
     public boolean add(Rol rol) {
-        // En insertar: p_nombre_rol = 39
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "roles");
-            cs.setString(39, rol.getNombreRol());
+            cs.setString(1, "roles");         
+            cs.setString(2, rol.getNombreRol()); 
             
             cs.execute();
             return true;
@@ -52,15 +51,14 @@ public class IrolDaoImplement implements IrolDao {
 
     @Override
     public boolean update(Rol rol) {
-        // En actualizar: p_id = 2, p_nombre_rol = 39
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "roles");
-            cs.setInt(2, rol.getIdRol());
-            cs.setString(39, rol.getNombreRol());
+            cs.setString(1, "roles");          
+            cs.setInt(2, rol.getIdRol());      
+            cs.setString(3, rol.getNombreRol()); 
             
             cs.execute();
             return true;
@@ -74,7 +72,7 @@ public class IrolDaoImplement implements IrolDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "roles");
@@ -91,13 +89,14 @@ public class IrolDaoImplement implements IrolDao {
     @Override
     public Rol findById(int id) {
         Rol r = null;
-        // En Buscar_por_id: p_id_rol es el duodécimo parámetro (posición 12)
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(12, id);
+            cs.setString(1, "roles");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     r = new Rol();

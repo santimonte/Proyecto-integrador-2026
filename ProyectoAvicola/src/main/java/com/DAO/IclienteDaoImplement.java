@@ -13,7 +13,7 @@ public class IclienteDaoImplement implements IclienteDao {
         List<Cliente> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "clientes");
@@ -34,15 +34,14 @@ public class IclienteDaoImplement implements IclienteDao {
 
     @Override
     public boolean add(Cliente cliente) {
-        // En insertar: p_tabla_destino es 1, p_id_usuario es 5, p_telefono_cliente es 6
         String sql = "{CALL insertar(?, NULL, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "clientes");
-            cs.setInt(5, cliente.getIdUsuario());
-            cs.setString(6, cliente.getTelefono());
+            cs.setString(1, "clientes");            
+            cs.setInt(2, cliente.getIdUsuario());    
+            cs.setString(3, cliente.getTelefono());   
             
             cs.execute();
             return true;
@@ -54,16 +53,16 @@ public class IclienteDaoImplement implements IclienteDao {
 
     @Override
     public boolean update(Cliente cliente) {
-        // En actualizar: p_tabla_destino es 1, p_id es 2, p_id_usuario es 5, p_telefono_cliente es 6
+        
         String sql = "{CALL actualizar(?, ?, NULL, NULL, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "clientes");
-            cs.setInt(2, cliente.getIdCliente());
-            cs.setInt(5, cliente.getIdUsuario());
-            cs.setString(6, cliente.getTelefono());
+            cs.setString(1, "clientes");            
+            cs.setInt(2, cliente.getIdCliente());    
+            cs.setInt(3, cliente.getIdUsuario());    
+            cs.setString(4, cliente.getTelefono());  
             
             cs.execute();
             return true;
@@ -77,7 +76,7 @@ public class IclienteDaoImplement implements IclienteDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "clientes");
@@ -94,13 +93,14 @@ public class IclienteDaoImplement implements IclienteDao {
     @Override
     public Cliente findById(int id) {
         Cliente c = null;
-        // En Buscar_por_id: p_id_cliente es el segundo parámetro
-        String sql = "{CALL Buscar_por_id(NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
+            cs.setString(1, "clientes");
             cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     c = new Cliente();
@@ -114,4 +114,6 @@ public class IclienteDaoImplement implements IclienteDao {
         }
         return c;
     }
+
+
 }

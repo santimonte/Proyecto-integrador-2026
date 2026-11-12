@@ -14,7 +14,7 @@ public class IventaDaoImplement implements IventaDao {
         List<Venta> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "ventas");
@@ -23,8 +23,6 @@ public class IventaDaoImplement implements IventaDao {
                     Venta v = new Venta();
                     v.setIdVenta(rs.getInt("id_venta"));
                     v.setIdCliente(rs.getInt("id_cliente"));
-                    
-                    // Corregido: Mapeo de totalFacturado desde la BD
                     v.setTotalFacturado(rs.getDouble("total_facturado"));
                     
                     Timestamp ts = rs.getTimestamp("fecha_venta");
@@ -42,23 +40,21 @@ public class IventaDaoImplement implements IventaDao {
 
     @Override
     public boolean add(Venta venta) {
-        // p_id_cliente_venta = 45, p_total_facturado = 46, p_fecha_venta = 47
-        String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?)}";
+        String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "ventas");
-            cs.setInt(45, venta.getIdCliente());
-            
-            // Corregido con tus getters reales
-            cs.setDouble(46, venta.getTotalFacturado());
+            cs.setString(1, "ventas");              
+            cs.setInt(2, venta.getIdCliente());       
             
             if (venta.getFechaVenta() != null) {
-                cs.setTimestamp(47, Timestamp.valueOf(venta.getFechaVenta()));
+                cs.setTimestamp(3, Timestamp.valueOf(venta.getFechaVenta())); 
             } else {
-                cs.setNull(47, java.sql.Types.TIMESTAMP);
+                cs.setNull(3, java.sql.Types.TIMESTAMP);
             }
+            
+            cs.setDouble(4, venta.getTotalFacturado()); 
             
             cs.execute();
             return true;
@@ -70,24 +66,22 @@ public class IventaDaoImplement implements IventaDao {
 
     @Override
     public boolean update(Venta venta) {
-        // p_id = 2, p_id_cliente_venta = 45, p_total_facturado = 46, p_fecha_venta = 47
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "ventas");
-            cs.setInt(2, venta.getIdVenta());
-            cs.setInt(45, venta.getIdCliente());
-            
-            // Corregido con tus getters reales
-            cs.setDouble(46, venta.getTotalFacturado());
+            cs.setString(1, "ventas");               
+            cs.setInt(2, venta.getIdVenta());         
+            cs.setInt(3, venta.getIdCliente());       
             
             if (venta.getFechaVenta() != null) {
-                cs.setTimestamp(47, Timestamp.valueOf(venta.getFechaVenta()));
+                cs.setTimestamp(4, Timestamp.valueOf(venta.getFechaVenta())); 
             } else {
-                cs.setNull(47, java.sql.Types.TIMESTAMP);
+                cs.setNull(4, java.sql.Types.TIMESTAMP);
             }
+            
+            cs.setDouble(5, venta.getTotalFacturado()); 
             
             cs.execute();
             return true;
@@ -101,7 +95,7 @@ public class IventaDaoImplement implements IventaDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "ventas");
@@ -118,20 +112,19 @@ public class IventaDaoImplement implements IventaDao {
     @Override
     public Venta findById(int id) {
         Venta v = null;
-        // En Buscar_por_id: p_id_venta es el decimoquinto parámetro (posición 15)
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(15, id);
+            cs.setString(1, "ventas");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     v = new Venta();
                     v.setIdVenta(rs.getInt("id_venta"));
                     v.setIdCliente(rs.getInt("id_cliente"));
-                    
-                    // Corregido: Mapeo de totalFacturado desde la BD
                     v.setTotalFacturado(rs.getDouble("total_facturado"));
                     
                     Timestamp ts = rs.getTimestamp("fecha_venta");

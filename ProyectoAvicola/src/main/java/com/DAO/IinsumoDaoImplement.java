@@ -1,6 +1,6 @@
 package com.DAO;
 
-import com.model.InsumoCompra; // Tu modelo real tal como está en tu proyecto
+import com.model.InsumoCompra;
 import com.conexion.Conexion;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ public class IinsumoDaoImplement implements IinsumoDao {
         List<InsumoCompra> lista = new ArrayList<>();
         String sql = "{CALL listar_tabla(?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "insumos_compras");
@@ -43,18 +43,18 @@ public class IinsumoDaoImplement implements IinsumoDao {
     public boolean add(InsumoCompra insumo) {
         String sql = "{CALL insertar(?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "insumos_compras");
-            cs.setInt(22, insumo.getIdProveedor());
-            cs.setString(23, insumo.getDescripcionInsumo());
-            cs.setInt(24, insumo.getCantidad());
+            cs.setString(1, "insumos_compras"); 
+            cs.setInt(2, insumo.getIdProveedor()); 
+            cs.setString(3, insumo.getDescripcionInsumo()); 
+            cs.setInt(4, insumo.getCantidad()); 
             
             if (insumo.getFechaCompra() != null) {
-                cs.setTimestamp(25, Timestamp.valueOf(insumo.getFechaCompra()));
+                cs.setTimestamp(5, Timestamp.valueOf(insumo.getFechaCompra())); 
             } else {
-                cs.setNull(25, java.sql.Types.TIMESTAMP);
+                cs.setNull(5, java.sql.Types.TIMESTAMP);
             }
             
             cs.execute();
@@ -69,19 +69,19 @@ public class IinsumoDaoImplement implements IinsumoDao {
     public boolean update(InsumoCompra insumo) {
         String sql = "{CALL actualizar(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setString(1, "insumos_compras");
-            cs.setInt(2, insumo.getIdCompra());
-            cs.setInt(22, insumo.getIdProveedor());
-            cs.setString(23, insumo.getDescripcionInsumo());
-            cs.setInt(24, insumo.getCantidad());
+            cs.setString(1, "insumos_compras"); 
+            cs.setInt(2, insumo.getIdCompra()); 
+            cs.setInt(3, insumo.getIdProveedor()); 
+            cs.setString(4, insumo.getDescripcionInsumo());
+            cs.setInt(5, insumo.getCantidad()); 
             
             if (insumo.getFechaCompra() != null) {
-                cs.setTimestamp(25, Timestamp.valueOf(insumo.getFechaCompra()));
+                cs.setTimestamp(6, Timestamp.valueOf(insumo.getFechaCompra())); 
             } else {
-                cs.setNull(25, java.sql.Types.TIMESTAMP);
+                cs.setNull(6, java.sql.Types.TIMESTAMP);
             }
             
             cs.execute();
@@ -96,7 +96,7 @@ public class IinsumoDaoImplement implements IinsumoDao {
     public boolean delete(int id) {
         String sql = "{CALL eliminar(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
             cs.setString(1, "insumos_compras");
@@ -113,12 +113,14 @@ public class IinsumoDaoImplement implements IinsumoDao {
     @Override
     public InsumoCompra findById(int id) {
         InsumoCompra i = null;
-        String sql = "{CALL Buscar_por_id(NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
+        String sql = "{CALL Buscar_por_id(?, ?)}";
         
-        try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getInstancia().getConexion();
              CallableStatement cs = con.prepareCall(sql)) {
             
-            cs.setInt(7, id);
+            cs.setString(1, "insumos_compras");
+            cs.setInt(2, id);
+            
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     i = new InsumoCompra();
@@ -138,4 +140,5 @@ public class IinsumoDaoImplement implements IinsumoDao {
         }
         return i;
     }
+
 }
