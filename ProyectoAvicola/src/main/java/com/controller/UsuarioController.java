@@ -1,6 +1,5 @@
 package com.controller;
 
-
 import com.DAO.*;
 import com.factory.DaoFactory;
 import com.model.Usuario;
@@ -15,14 +14,33 @@ import jakarta.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.List;
 
 @WebServlet("/usuarios")
 public class UsuarioController extends HttpServlet {
 
-	private final IusuarioDao usuarioDao = com.factory.DaoFactory.getUsuarioDao();
-
+    private final IusuarioDao usuarioDao = com.factory.DaoFactory.getUsuarioDao();
     private final Gson gson = new Gson();
+
+    // Método para encriptar contraseñas en SHA-256 sin librerías externas
+    private String hashearPassword(String passwordPlana) {
+        if (passwordPlana == null) return null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(passwordPlana.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al encriptar la contraseña", e);
+        }
+    }
 
     // Método auxiliar para configurar los encabezados CORS
     private void setCorsHeaders(HttpServletResponse response) {
@@ -40,7 +58,7 @@ public class UsuarioController extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
- // --- READ (Soporta listar todos, buscar por ID o verificar sesión) ---
+    // --- READ (Soporta listar todos, buscar por ID o verificar sesión) ---
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -60,7 +78,7 @@ public class UsuarioController extends HttpServlet {
                 if (session != null && session.getAttribute("usuarioLogueado") != null) {
                     Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
                     response.setStatus(HttpServletResponse.SC_OK);
-                    out.print(this.gson.toJson(usuarioLogueado)); // Devuelve UN ÚNICO objeto JSON del usuario
+                    out.print(this.gson.toJson(usuarioLogueado));
                 } else {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     out.print("{\"error\": \"No hay sesión activa\"}");
@@ -90,7 +108,7 @@ public class UsuarioController extends HttpServlet {
         out.flush();
     }
 
- // --- CREATE / LOGIN (Maneja registro y login según la acción) ---
+    // --- CREATE / LOGIN (Maneja registro y login según la acción) ---
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -106,9 +124,12 @@ public class UsuarioController extends HttpServlet {
 
             if (jsonObj != null && jsonObj.has("accion") && "login".equals(jsonObj.get("accion").getAsString())) {
                 String email = jsonObj.get("email").getAsString();
-                String contrasena = jsonObj.get("contrasena").getAsString();
+                String contrasenaPlana = jsonObj.get("contrasena").getAsString();
+                
+                // Hasheamos la contraseña ingresada para compararla con la de la BD
+                String contrasenaHasheada = hashearPassword(contrasenaPlana);
 
-                Usuario usuarioValido = usuarioDao.validarLogin(email, contrasena);
+                Usuario usuarioValido = usuarioDao.validarLogin(email, contrasenaHasheada);
 
                 if (usuarioValido != null) {
                     HttpSession session = request.getSession();
@@ -122,6 +143,12 @@ public class UsuarioController extends HttpServlet {
                 }
             } else {
                 Usuario nuevoUsuario = gson.fromJson(jsonObj, Usuario.class);
+                
+                // Hasheamos la contraseña antes de guardar el nuevo usuario
+                if (nuevoUsuario.getContrasena() != null && !nuevoUsuario.getContrasena().isEmpty()) {
+                    nuevoUsuario.setContrasena(hashearPassword(nuevoUsuario.getContrasena()));
+                }
+                
                 boolean creado = usuarioDao.add(nuevoUsuario);
 
                 if (creado) {
@@ -152,6 +179,11 @@ public class UsuarioController extends HttpServlet {
         try {
             BufferedReader reader = request.getReader();
             Usuario usuarioActualizar = this.gson.fromJson(reader, Usuario.class);
+
+            // Hasheamos la nueva contraseña si viene en la actualización
+            if (usuarioActualizar.getContrasena() != null && !usuarioActualizar.getContrasena().isEmpty()) {
+                usuarioActualizar.setContrasena(hashearPassword(usuarioActualizar.getContrasena()));
+            }
 
             boolean actualizado = usuarioDao.update(usuarioActualizar);
 
