@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Cámaras Frigoríficas</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/stock.css"> <!-- Reutilizamos estilos limpios de tablas y tarjetas -->
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Avícola San Martín" class="logo">
+            <h2>Avícola San Martín</h2>
+        </div>
+        <div class="user-info">
+            <span id="userEmail">Cargando usuario...</span>
+            <button id="btnLogout" class="btn-logout" type="button">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">📊 Panel Principal</a></li>
+                    <li><a href="produccion.html">🥚 Producción</a></li>
+                    <li><a href="galpones.html">🐔 Galpones y Aves</a></li>
+                    <li><a href="sensores.html">🌡️ Sensores y Clima</a></li>
+                    <li><a href="ventas.html">👥 Clientes y Ventas</a></li>
+                    <li><a href="stock.html">📦 Stock e Insumos</a></li>
+                    <li><a href="camaras.html" class="active">❄️ Cámaras y Frío</a></li>
+                    <li><a href="sanidad.html">🩺 Sanidad y Lotes</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="welcome-banner">
+                <h1>Control de Cámaras Frigoríficas</h1>
+                <p>Monitoreo en tiempo real de la capacidad y el estado de la cadena de frío.</p>
+            </div>
+
+            <section class="cards-grid">
+                <div class="card">
+                    <h3>Cámaras Activas</h3>
+                    <p class="card-value" id="totalCamarasCard">0</p>
+                </div>
+            </section>
+
+            <div class="card table-card" style="margin-top: 1.5rem;">
+                <h3>Estado de Cámaras Frigoríficas</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID Cámara</th>
+                                <th>Capacidad (Unidades/Kg)</th>
+                                <th>Estado de Cadena de Frío</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaCamarasBody">
+                            <tr>
+                                <td colspan="3" class="fila-vacia">Cargando cámaras...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/camaras.js"></script>
+</body>
+</html>

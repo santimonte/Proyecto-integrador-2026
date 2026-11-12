@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Galpones y Aves</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/galpones.css">
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Avícola San Martín" class="logo">
+            <h2>Avícola San Martín</h2>
+        </div>
+        <div class="user-info">
+            <span id="userEmail">Cargando usuario...</span>
+            <button id="btnLogout" class="btn-logout" type="button">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Menú Lateral -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">📊 Panel Principal</a></li>
+                    <li><a href="produccion.html">🥚 Producción</a></li>
+                    <li><a href="galpones.html" class="active">🐔 Galpones y Aves</a></li>
+                    <li><a href="sensores.html">🌡️ Sensores y Clima</a></li>
+                    <li><a href="ventas.html">👥 Clientes y Ventas</a></li>
+                    <li><a href="stock.html">📦 Stock e Insumos</a></li>
+                    <li><a href="camaras.html" class="active">❄️ Cámaras y Frío</a></li>
+                    <li><a href="sanidad.html">🩺 Sanidad y Lotes</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Central -->
+        <main class="content">
+            <div class="welcome-banner">
+                <h1>Gestión de Galpones e Infraestructura</h1>
+                <p>Administra los galpones de cría y el control de capacidad máxima de aves.</p>
+            </div>
+
+            <!-- Resumen de Métricas -->
+            <section class="cards-grid">
+                <div class="card">
+                    <h3>Galpones Registrados</h3>
+                    <p class="card-value" id="totalGalponesCard">0</p>
+                </div>
+            </section>
+
+            <div class="galpones-grid-layout">
+                <!-- Formulario de Registro (Solo visible/habilitado para Administradores) -->
+                <div class="card form-card" id="cardFormularioGalpon">
+                    <h3>Registrar Nuevo Galpón</h3>
+                    <form id="formGalpon" novalidate>
+                        <div class="mb-3">
+                            <label for="nombreGalpon" class="form-label">Nombre del Galpón</label>
+                            <input type="text" class="form-control" id="nombreGalpon" required placeholder="Ej: Galpón Norte de Engorde">
+                        </div>
+                        <div class="mb-3">
+                            <label for="capacidadMaxima" class="form-label">Capacidad Máxima (Aves)</label>
+                            <input type="number" class="form-control" id="capacidadMaxima" required min="1" placeholder="Ej: 5000">
+                        </div>
+                        <p class="form-error" id="mensajeErrorGalpon" role="alert"></p>
+                        <button type="submit" class="btn-submit">Guardar Galpón</button>
+                    </form>
+                </div>
+
+                <!-- Tabla de Datos -->
+                <div class="card table-card">
+                    <h3>Galpones Activos</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre del Galpón</th>
+                                    <th>Capacidad Máxima</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaGalponesBody">
+                                <tr>
+                                    <td colspan="3" class="fila-vacia">Cargando galpones...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/galpones.js"></script>
+</body>
+</html>

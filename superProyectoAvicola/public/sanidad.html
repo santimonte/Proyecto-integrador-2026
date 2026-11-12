@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avícola San Martín - Sanidad y Controles</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/stock.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Avícola San Martín" class="logo">
+            <h2>Avícola San Martín</h2>
+        </div>
+        <div class="user-info">
+            <span id="userEmail">Cargando usuario...</span>
+            <button id="btnLogout" class="btn-logout" type="button">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">📊 Panel Principal</a></li>
+                    <li><a href="produccion.html">🥚 Producción</a></li>
+                    <li><a href="galpones.html">🐔 Galpones y Aves</a></li>
+                    <li><a href="sensores.html">🌡️ Sensores y Clima</a></li>
+                    <li><a href="ventas.html">👥 Clientes y Ventas</a></li>
+                    <li><a href="stock.html">📦 Stock e Insumos</a></li>
+                    <li><a href="camaras.html">❄️ Cámaras y Frío</a></li>
+                    <li><a href="sanidad.html" class="active">🩺 Sanidad y Lotes</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="welcome-banner">
+                <h1>Controles de Sanidad Veterinaria</h1>
+                <p>Registro y seguimiento de sanidad en lotes de aves y control de bajas.</p>
+            </div>
+
+            <section class="cards-grid">
+                <div class="card">
+                    <h3>Controles Registrados</h3>
+                    <p class="card-value" id="totalControlesCard">0</p>
+                </div>
+            </section>
+
+            <div class="stock-grid-layout" style="margin-top: 1.5rem;">
+                <!-- Formulario solo para Administradores / Veterinarios -->
+                <div class="card form-card" id="cardFormularioSanidad">
+                    <h3>Registrar Control Sanitario</h3>
+                    <form id="formSanidad" novalidate>
+                        <div class="mb-3">
+                            <label for="idLote" class="form-label">ID del Lote</label>
+                            <input type="number" class="form-control" id="idLote" required placeholder="Ej: 1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidadBajas" class="form-label">Cantidad de Bajas</label>
+                            <input type="number" class="form-control" id="cantidadBajas" required min="0" placeholder="Ej: 5">
+                        </div>
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones Veterinarias</label>
+                            <input type="text" class="form-control" id="observaciones" required placeholder="Ej: Estado general saludable">
+                        </div>
+                        <button type="submit" class="btn-submit">Guardar Control</button>
+                    </form>
+                </div>
+
+                <!-- Tabla de Controles -->
+                <div class="card table-card">
+                    <h3>Historial de Controles</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Control</th>
+                                    <th>ID Lote</th>
+                                    <th>Bajas</th>
+                                    <th>Observaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaSanidadBody">
+                                <tr>
+                                    <td colspan="4" class="fila-vacia">Cargando registros sanitarios...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/sanidad.js"></script>
+</body>
+</html>

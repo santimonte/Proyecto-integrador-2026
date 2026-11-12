@@ -1,5 +1,6 @@
+
+
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Verificar sesión activa con Java
     try {
         const sessionResponse = await fetch('http://127.0.0.1:8080/ProyectoAvicola/usuarios?accion=sesion', {
             method: 'GET',
@@ -8,7 +9,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (sessionResponse.ok) {
             const usuario = await sessionResponse.json();
-            document.getElementById("userEmail").textContent = usuario.email;
+            
+            const emailSpan = document.getElementById("userEmail");
+            if (emailSpan) {
+                emailSpan.textContent = usuario.email;
+            }
+
+            // Aplicar filtro por rol
+            aplicarFiltroRoles(usuario);
+
         } else {
             window.location.href = "login.html";
             return;
@@ -19,10 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    // 2. Cargar la lista de sensores al iniciar la página
     cargarSensores();
 
-    // 3. Manejar el envío del formulario para registrar un nuevo sensor
     const formSensor = document.getElementById("formSensor");
     if (formSensor) {
         formSensor.addEventListener("submit", async (e) => {
@@ -32,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const ubicacion = document.getElementById("ubicacion").value;
 
             try {
-                // CORREGIDO: Apunta a 127.0.0.1
                 const response = await fetch('http://127.0.0.1:8080/ProyectoAvicola/sensores', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -47,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (response.ok && data.exito) {
                     alert("¡Sensor registrado con éxito!");
                     formSensor.reset();
-                    cargarSensores(); // Recargar la tabla automáticamente
+                    cargarSensores();
                 } else {
                     alert(data.error || "No se pudo registrar el sensor.");
                 }
@@ -58,16 +64,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // 4. Botón de Cerrar Sesión
-    document.getElementById("btnLogout").addEventListener("click", () => {
-        window.location.href = "login.html";
-    });
+    const btnLogout = document.getElementById("btnLogout");
+    if (btnLogout) {
+        btnLogout.addEventListener("click", () => {
+            window.location.href = "login.html";
+        });
+    }
 });
 
-// Función para obtener y pintar los sensores en la tabla
 async function cargarSensores() {
     try {
-        // CORREGIDO: Apunta a 127.0.0.1
         const response = await fetch('http://127.0.0.1:8080/ProyectoAvicola/sensores', {
             method: 'GET',
             credentials: 'include'
@@ -92,10 +98,19 @@ async function cargarSensores() {
                 `;
                 tbody.appendChild(tr);
             });
-        } else {
-            console.error("Error al obtener los sensores de la base de datos");
         }
     } catch (error) {
-        console.error("Error de red al cargar sensores:", error);
+        console.error("Error al cargar sensores:", error);
+    }
+}
+
+
+function aplicarFiltroRoles(usuario) {
+    if (usuario.idRol === 1) { // Cliente
+        console.log("Cliente detectado: Ocultando panel de alta de sensores.");
+        const formCard = document.querySelector(".form-card");
+        if (formCard) {
+            formCard.style.display = "none";
+        }
     }
 }
