@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-11-2026 a las 23:15:03
+-- Tiempo de generación: 16-11-2026 a las 16:36:44
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -407,6 +407,57 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `registrar_baja_sanitaria` (IN `p_id
     END IF;
 END$$
 
+DROP PROCEDURE IF EXISTS `registrar_cliente_completo`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrar_cliente_completo` (IN `p_email` VARCHAR(150), IN `p_contrasena` VARCHAR(255), IN `p_telefono` VARCHAR(50))   BEGIN
+    START TRANSACTION;
+
+        -- 1. Crear el usuario con id_rol = 1 (Cliente)
+        INSERT INTO usuarios (email, contrasena, id_rol)
+        VALUES (p_email, p_contrasena, 1);
+
+        -- 2. Crear el cliente enlazando el ID generado directamente
+        INSERT INTO clientes (id_usuario, telefono)
+        VALUES (LAST_INSERT_ID(), p_telefono);
+
+    COMMIT;
+END$$
+
+DROP PROCEDURE IF EXISTS `registrar_venta_completa`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrar_venta_completa` (IN `p_id_cliente` INT, IN `p_id_producto` INT, IN `p_cantidad` INT, IN `p_precio_unitario` DECIMAL(10,2))   BEGIN
+    START TRANSACTION;
+
+        IF (SELECT stock_disponible FROM productos_stock WHERE id_producto = p_id_producto) < p_cantidad THEN
+            ROLLBACK;
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: No hay stock suficiente para realizar la venta.';
+        END IF;
+
+        INSERT INTO ventas (id_cliente, fecha_venta, total_facturado)
+        VALUES (p_id_cliente, NOW(), p_cantidad * p_precio_unitario);
+
+        INSERT INTO detalles_ventas (id_venta, id_producto, cantidad, precio_unitario)
+        VALUES (LAST_INSERT_ID(), p_id_producto, p_cantidad, p_precio_unitario);
+
+    COMMIT;
+END$$
+
+DROP PROCEDURE IF EXISTS `reporte_ventas_por_cliente`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `reporte_ventas_por_cliente` (IN `p_id_cliente` INT)   BEGIN
+    SELECT 
+        v.id_venta,
+        v.fecha_venta,
+        u.email AS cliente,
+        p.nombre_producto,
+        dv.cantidad,
+        dv.precio_unitario,
+        v.total_facturado
+    FROM ventas v
+    INNER JOIN clientes c ON v.id_cliente = c.id_cliente
+    INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
+    INNER JOIN detalles_ventas dv ON v.id_venta = dv.id_venta
+    INNER JOIN productos_stock p ON dv.id_producto = p.id_producto
+    WHERE c.id_cliente = p_id_cliente;
+END$$
+
 DROP PROCEDURE IF EXISTS `validar_login`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_login` (IN `p_email` VARCHAR(150), IN `p_contrasena` VARCHAR(255))   BEGIN
     SELECT id_usuario, email, contrasena, id_rol 
@@ -528,6 +579,16 @@ CREATE TRIGGER `trg_descontar_stock_venta` AFTER INSERT ON `detalles_ventas` FOR
 UPDATE productos_stock
 SET stock_disponible = stock_disponible - NEW.cantidad
 WHERE id_producto = NEW.id_producto;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_validar_stock_antes_venta`;
+DELIMITER $$
+CREATE TRIGGER `trg_validar_stock_antes_venta` BEFORE INSERT ON `detalles_ventas` FOR EACH ROW BEGIN
+    IF NEW.cantidad > (SELECT stock_disponible FROM productos_stock WHERE id_producto = NEW.id_producto) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Error: Stock insuficiente en cámara para este producto.';
+    END IF;
 END
 $$
 DELIMITER ;
@@ -769,6 +830,23 @@ INSERT INTO `ventas` (`id_venta`, `id_cliente`, `fecha_venta`, `total_facturado`
 -- --------------------------------------------------------
 
 --
+-- Estructura Stand-in para la vista `vista_historial_sanitario`
+-- (Véase abajo para la vista actual)
+--
+DROP VIEW IF EXISTS `vista_historial_sanitario`;
+CREATE TABLE `vista_historial_sanitario` (
+`id_control` int(11)
+,`fecha_control` datetime
+,`nombre_galpon` varchar(100)
+,`raza_genetica` varchar(100)
+,`cantidad_bajas` int(11)
+,`observaciones_veterinarias` varchar(255)
+,`veterinario_email` varchar(150)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura Stand-in para la vista `vista_lotes_con_galpon`
 -- (Véase abajo para la vista actual)
 --
@@ -784,12 +862,78 @@ CREATE TABLE `vista_lotes_con_galpon` (
 -- --------------------------------------------------------
 
 --
+-- Estructura Stand-in para la vista `vista_stock_camaras`
+-- (Véase abajo para la vista actual)
+--
+DROP VIEW IF EXISTS `vista_stock_camaras`;
+CREATE TABLE `vista_stock_camaras` (
+`id_producto` int(11)
+,`nombre_producto` varchar(100)
+,`stock_disponible` int(11)
+,`fecha_envasado` datetime
+,`id_camara` int(11)
+,`estado_cadena_frio` varchar(50)
+,`capacidad_camara` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_ventas_completas`
+-- (Véase abajo para la vista actual)
+--
+DROP VIEW IF EXISTS `vista_ventas_completas`;
+CREATE TABLE `vista_ventas_completas` (
+`id_venta` int(11)
+,`fecha_venta` datetime
+,`cliente_email` varchar(150)
+,`cliente_telefono` varchar(50)
+,`nombre_producto` varchar(100)
+,`cantidad` int(11)
+,`precio_unitario` decimal(10,2)
+,`subtotal` decimal(20,2)
+,`total_facturado` decimal(12,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_historial_sanitario`
+--
+DROP TABLE IF EXISTS `vista_historial_sanitario`;
+
+DROP VIEW IF EXISTS `vista_historial_sanitario`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_historial_sanitario`  AS SELECT `cs`.`id_control` AS `id_control`, `cs`.`fecha_control` AS `fecha_control`, `g`.`nombre_galpon` AS `nombre_galpon`, `la`.`raza_genetica` AS `raza_genetica`, `cs`.`cantidad_bajas` AS `cantidad_bajas`, `cs`.`observaciones_veterinarias` AS `observaciones_veterinarias`, `u`.`email` AS `veterinario_email` FROM (((`controles_sanidad` `cs` join `lotes_aves` `la` on(`cs`.`id_lote` = `la`.`id_lote`)) join `galpones` `g` on(`la`.`id_galpon` = `g`.`id_galpon`)) join `usuarios` `u` on(`cs`.`id_usuario_veterinario` = `u`.`id_usuario`)) ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura para la vista `vista_lotes_con_galpon`
 --
 DROP TABLE IF EXISTS `vista_lotes_con_galpon`;
 
 DROP VIEW IF EXISTS `vista_lotes_con_galpon`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_lotes_con_galpon`  AS SELECT `lotes_aves`.`id_lote` AS `id_lote`, `lotes_aves`.`raza_genetica` AS `raza_genetica`, `lotes_aves`.`cantidad_inicial` AS `cantidad_inicial`, `galpones`.`nombre_galpon` AS `nombre_galpon`, `galpones`.`capacidad_maxima` AS `capacidad_maxima` FROM (`lotes_aves` join `galpones` on(`lotes_aves`.`id_galpon` = `galpones`.`id_galpon`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_stock_camaras`
+--
+DROP TABLE IF EXISTS `vista_stock_camaras`;
+
+DROP VIEW IF EXISTS `vista_stock_camaras`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_stock_camaras`  AS SELECT `p`.`id_producto` AS `id_producto`, `p`.`nombre_producto` AS `nombre_producto`, `p`.`stock_disponible` AS `stock_disponible`, `p`.`fecha_envasado` AS `fecha_envasado`, `cf`.`id_camara` AS `id_camara`, `cf`.`estado_cadena_frio` AS `estado_cadena_frio`, `cf`.`capacidad` AS `capacidad_camara` FROM (`productos_stock` `p` join `camaras_frigorificas` `cf` on(`p`.`id_camara` = `cf`.`id_camara`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_ventas_completas`
+--
+DROP TABLE IF EXISTS `vista_ventas_completas`;
+
+DROP VIEW IF EXISTS `vista_ventas_completas`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_ventas_completas`  AS SELECT `v`.`id_venta` AS `id_venta`, `v`.`fecha_venta` AS `fecha_venta`, `u`.`email` AS `cliente_email`, `c`.`telefono` AS `cliente_telefono`, `p`.`nombre_producto` AS `nombre_producto`, `dv`.`cantidad` AS `cantidad`, `dv`.`precio_unitario` AS `precio_unitario`, `dv`.`cantidad`* `dv`.`precio_unitario` AS `subtotal`, `v`.`total_facturado` AS `total_facturado` FROM ((((`ventas` `v` join `clientes` `c` on(`v`.`id_cliente` = `c`.`id_cliente`)) join `usuarios` `u` on(`c`.`id_usuario` = `u`.`id_usuario`)) join `detalles_ventas` `dv` on(`v`.`id_venta` = `dv`.`id_venta`)) join `productos_stock` `p` on(`dv`.`id_producto` = `p`.`id_producto`)) ;
 
 --
 -- Índices para tablas volcadas
