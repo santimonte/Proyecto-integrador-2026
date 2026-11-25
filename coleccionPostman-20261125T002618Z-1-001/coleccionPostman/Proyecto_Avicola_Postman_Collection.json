@@ -1,0 +1,2801 @@
+{
+  "info": {
+    "_postman_id": "6d4d8a8d-7b73-4cc0-8db3-avi2026patch",
+    "name": "Proyecto Avícola - API REST (CRUD + PATCH)",
+    "description": "Colección armada a partir de los controladores del ZIP Proyecto_Avicola_con_PATCH. Incluye endpoints GET, POST, PUT, PATCH y DELETE de las 15 entidades, login y test de conexión. Importar también el environment incluido. Los IDs de relaciones deben existir en la base de datos. Los ejemplos son datos de prueba, no garantizan inserción si hay restricciones FK o campos NOT NULL adicionales.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 - Conexión",
+      "item": [
+        {
+          "name": "Comprobar conexión a la base de datos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/testdb",
+            "description": "Comprueba el endpoint de diagnóstico. La respuesta depende de HomeServlet."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login de usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios",
+            "description": "El controlador espera accion=login, email y contrasena. Guarda la sesión si las credenciales son válidas.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accion\": \"login\",\n  \"email\": \"{{loginEmail}}\",\n  \"contrasena\": \"{{loginPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios",
+            "description": "La contraseña se envía en texto al endpoint y el servidor debe guardarla hasheada.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nuevo.usuario@example.com\",\n  \"contrasena\": \"ClaveTemporal123!\",\n  \"idRol\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Cámaras frigoríficas",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/camaras",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/camaras?id={{camarasId}}",
+            "description": "Requiere la variable camarasId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/camaras",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"capacidad\": 120,\n  \"estadoCadenaFrio\": \"ACTIVA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/camaras",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idCamara\": 1,\n  \"capacidad\": 120,\n  \"estadoCadenaFrio\": \"ACTIVA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/camaras?id={{camarasId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"capacidad\": 150\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/camaras?id={{camarasId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Clientes",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/clientes",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/clientes?id={{clientesId}}",
+            "description": "Requiere la variable clientesId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/clientes",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idUsuario\": 1,\n  \"telefono\": \"1122334455\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/clientes",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idCliente\": 1,\n  \"idUsuario\": 1,\n  \"telefono\": \"1122334455\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/clientes?id={{clientesId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"1199887766\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/clientes?id={{clientesId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Controles de sanidad",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/controles-sanidad",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/controles-sanidad?id={{controles-sanidadId}}",
+            "description": "Requiere la variable controles-sanidadId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/controles-sanidad",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idLote\": 1,\n  \"idUsuarioVeterinario\": 1,\n  \"fechaControl\": \"2026-11-16T10:00:00\",\n  \"cantidadBajas\": 2,\n  \"observacionesVeterinarias\": \"Control de prueba\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/controles-sanidad",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idControl\": 1,\n  \"idLote\": 1,\n  \"idUsuarioVeterinario\": 1,\n  \"fechaControl\": \"2026-11-16T10:00:00\",\n  \"cantidadBajas\": 2,\n  \"observacionesVeterinarias\": \"Control de prueba\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/controles-sanidad?id={{controles-sanidadId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidadBajas\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/controles-sanidad?id={{controles-sanidadId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Detalles de venta",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/detalles-ventas",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/detalles-ventas?id={{detalles-ventasId}}",
+            "description": "Requiere la variable detalles-ventasId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/detalles-ventas",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idVenta\": 1,\n  \"idProducto\": 1,\n  \"cantidad\": 5,\n  \"precioUnitario\": 1200.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/detalles-ventas",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idDetalleVenta\": 1,\n  \"idVenta\": 1,\n  \"idProducto\": 1,\n  \"cantidad\": 5,\n  \"precioUnitario\": 1200.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/detalles-ventas?id={{detalles-ventasId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidad\": 6\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/detalles-ventas?id={{detalles-ventasId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Faenas",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/faenas",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/faenas?id={{faenasId}}",
+            "description": "Requiere la variable faenasId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/faenas",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idLote\": 1,\n  \"fechaFaena\": \"2026-11-16T11:00:00\",\n  \"cantidadAvesFaenadas\": 50,\n  \"pesoTotalObtenido\": 125.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/faenas",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idFaena\": 1,\n  \"idLote\": 1,\n  \"fechaFaena\": \"2026-11-16T11:00:00\",\n  \"cantidadAvesFaenadas\": 50,\n  \"pesoTotalObtenido\": 125.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/faenas?id={{faenasId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidadAvesFaenadas\": 45\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/faenas?id={{faenasId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Galpones",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/galpones",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/galpones?id={{galponesId}}",
+            "description": "Requiere la variable galponesId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/galpones",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreGalpon\": \"Galpón de prueba\",\n  \"capacidadMaxima\": \"1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/galpones",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idGalpon\": 1,\n  \"nombreGalpon\": \"Galpón de prueba\",\n  \"capacidadMaxima\": \"1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/galpones?id={{galponesId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"capacidadMaxima\": \"1200\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/galpones?id={{galponesId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 - Insumos / compras",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/insumos",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/insumos?id={{insumosId}}",
+            "description": "Requiere la variable insumosId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/insumos",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idProveedor\": 1,\n  \"descripcionInsumo\": \"Alimento balanceado\",\n  \"cantidad\": 100,\n  \"fechaCompra\": \"2026-11-16T09:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/insumos",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idCompra\": 1,\n  \"idProveedor\": 1,\n  \"descripcionInsumo\": \"Alimento balanceado\",\n  \"cantidad\": 100,\n  \"fechaCompra\": \"2026-11-16T09:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/insumos?id={{insumosId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidad\": 120\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/insumos?id={{insumosId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "08 - Lotes de aves",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/lotes",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/lotes?id={{lotesId}}",
+            "description": "Requiere la variable lotesId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lotes",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idGalpon\": 1,\n  \"fechaIngreso\": \"2026-11-16T08:00:00\",\n  \"cantidadInicial\": 500,\n  \"razaGenetica\": \"Cobb 500\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lotes",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idLote\": 1,\n  \"idGalpon\": 1,\n  \"fechaIngreso\": \"2026-11-16T08:00:00\",\n  \"cantidadInicial\": 500,\n  \"razaGenetica\": \"Cobb 500\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lotes?id={{lotesId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidadInicial\": 480\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/lotes?id={{lotesId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "09 - Mediciones de sensores",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/mediciones",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/mediciones?id={{medicionesId}}",
+            "description": "Requiere la variable medicionesId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/mediciones",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idSensor\": 1,\n  \"valorRegistrado\": 25.5,\n  \"fechaMedicion\": \"2026-11-16T12:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/mediciones",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idMedicion\": 1,\n  \"idSensor\": 1,\n  \"valorRegistrado\": 25.5,\n  \"fechaMedicion\": \"2026-11-16T12:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/mediciones?id={{medicionesId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valorRegistrado\": 26.2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/mediciones?id={{medicionesId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "10 - Productos en stock",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos-stock",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos-stock?id={{productos-stockId}}",
+            "description": "Requiere la variable productos-stockId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/productos-stock",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idCamara\": 1,\n  \"nombreProducto\": \"Pollo entero\",\n  \"stockDisponible\": 80,\n  \"fechaEnvasado\": \"2026-11-16T13:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/productos-stock",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idProducto\": 1,\n  \"idCamara\": 1,\n  \"nombreProducto\": \"Pollo entero\",\n  \"stockDisponible\": 80,\n  \"fechaEnvasado\": \"2026-11-16T13:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/productos-stock?id={{productos-stockId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stockDisponible\": 90\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/productos-stock?id={{productos-stockId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "11 - Proveedores",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/proveedores",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/proveedores?id={{proveedoresId}}",
+            "description": "Requiere la variable proveedoresId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/proveedores",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"1144556677\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/proveedores",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idProveedor\": 1,\n  \"telefono\": \"1144556677\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/proveedores?id={{proveedoresId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"1144556688\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/proveedores?id={{proveedoresId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "12 - Roles",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/roles",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/roles?id={{rolesId}}",
+            "description": "Requiere la variable rolesId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/roles",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreRol\": \"OPERARIO_PRUEBA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/roles",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idRol\": 1,\n  \"nombreRol\": \"OPERARIO_PRUEBA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/roles?id={{rolesId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreRol\": \"OPERARIO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/roles?id={{rolesId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "13 - Sensores",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/sensores",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/sensores?id={{sensoresId}}",
+            "description": "Requiere la variable sensoresId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sensores",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoSensor\": \"Temperatura\",\n  \"ubicacion\": \"Galpón 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sensores",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idSensor\": 1,\n  \"tipoSensor\": \"Temperatura\",\n  \"ubicacion\": \"Galpón 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sensores?id={{sensoresId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"Galpón 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/sensores?id={{sensoresId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "14 - Usuarios",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios?id={{usuariosId}}",
+            "description": "Requiere la variable usuariosId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"prueba.postman@example.com\",\n  \"contrasena\": \"ClaveTemporal123!\",\n  \"idRol\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idUsuario\": 1,\n  \"email\": \"prueba.postman@example.com\",\n  \"contrasena\": \"ClaveTemporal123!\",\n  \"idRol\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios?id={{usuariosId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"prueba.actualizada@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios?id={{usuariosId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "15 - Ventas",
+      "item": [
+        {
+          "name": "01 - Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/ventas",
+            "description": "Devuelve todos los registros."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 - Buscar por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/ventas?id={{ventasId}}",
+            "description": "Requiere la variable ventasId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 - Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ventas",
+            "description": "Ejemplo de cuerpo. Ajustá las claves foráneas (IDs relacionados) a registros existentes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idCliente\": 1,\n  \"fechaVenta\": \"2026-11-16T14:00:00\",\n  \"totalFacturado\": 15000.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 - Reemplazar / actualizar completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ventas",
+            "description": "PUT actualiza el objeto completo. Reemplazá el ID y los valores por datos válidos de tu BD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idVenta\": 1,\n  \"idCliente\": 1,\n  \"fechaVenta\": \"2026-11-16T14:00:00\",\n  \"totalFacturado\": 15000.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 - Actualizar parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ventas?id={{ventasId}}",
+            "description": "PATCH modifica únicamente los campos enviados y conserva los demás.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"totalFacturado\": 17500.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 - Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/ventas?id={{ventasId}}",
+            "description": "Elimina el registro indicado. Ejecutar solo con un ID de prueba."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Respuesta HTTP recibida\", function () { pm.response.to.have.status(pm.response.code); });",
+                  "pm.test(\"Tiempo de respuesta menor a 5 segundos\", function () { pm.expect(pm.response.responseTime).to.be.below(5000); });",
+                  "if (pm.response.code >= 400) { console.warn(\"Revisar respuesta:\", pm.response.code, pm.response.text()); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/ProyectoAvicola",
+      "type": "string"
+    }
+  ]
+}
