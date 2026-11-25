@@ -39,7 +39,7 @@ public class MedicionSensorController extends HttpServlet {
 
     private void setCorsHeaders(HttpServletResponse response) {
         response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setHeader("Access-Control-Allow-Credentials", "true");
     }
@@ -177,4 +177,62 @@ public class MedicionSensorController extends HttpServlet {
         }
         out.flush();
     }
+
+    // --- PATCH (actualización parcial) ---
+    // Servlet API 5.0 no trae doPatch, por eso se redirige desde service()
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if ("PATCH".equalsIgnoreCase(request.getMethod())) {
+            doPatch(request, response);
+        } else {
+            super.service(request, response);
+        }
+    }
+
+    protected void doPatch(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        setCorsHeaders(response);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            com.google.gson.JsonObject cambios =
+                    com.google.gson.JsonParser.parseReader(request.getReader()).getAsJsonObject();
+
+            if (!cambios.has("idMedicion")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\": \"Falta idMedicion\"}");
+                return;
+            }
+
+            MedicionSensor existente = medicionDao.findById(cambios.get("idMedicion").getAsInt());
+            if (existente == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.print("{\"error\": \"Medición no encontrado\"}");
+                return;
+            }
+
+            // Mezcla: datos actuales + solo los campos enviados
+            com.google.gson.JsonObject actual = gson.toJsonTree(existente).getAsJsonObject();
+            for (java.util.Map.Entry<String, com.google.gson.JsonElement> campo : cambios.entrySet()) {
+                actual.add(campo.getKey(), campo.getValue());
+            }
+            MedicionSensor actualizado = gson.fromJson(actual, MedicionSensor.class);
+
+            if (medicionDao.update(actualizado)) {
+                out.print("{\"mensaje\": \"Medición actualizado parcialmente con éxito\"}");
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\": \"No se pudo actualizar\"}");
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+        out.flush();
+    }
+
 }
